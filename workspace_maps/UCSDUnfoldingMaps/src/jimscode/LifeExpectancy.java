@@ -20,6 +20,8 @@ public class LifeExpectancy extends PApplet {
 		map = new UnfoldingMap(this, 50, 50, 700, 500, new Google.GoogleMapProvider());
 		MapUtils.createDefaultEventDispatcher(this, map);
 		
+		
+		
 	}
 	public void draw(){
 		map.draw();
