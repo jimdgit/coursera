@@ -79,6 +79,10 @@ public class MyDisplay extends PApplet {
 			
 			
 		}
+		
+		public class Legend {
+			
+		}
 
 
 		
