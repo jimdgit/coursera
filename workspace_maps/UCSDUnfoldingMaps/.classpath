@@ -3,9 +3,9 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="data"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="lib/core.jar" sourcepath="C:/eclipse/processing-master/core">
+	<classpathentry kind="lib" path="lib/core.jar" sourcepath="C:/git/coursera/workspace_maps/processing-master/core">
 		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/C:/eclipse/workspace_maps/UCSDUnfoldingMaps/lib/processing-javadoc.jar!/"/>
+			<attribute name="javadoc_location" value="jar:file:/C:/git/coursera/workspace_maps/UCSDUnfoldingMaps/doc/processing-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/gluegen-rt.jar"/>
