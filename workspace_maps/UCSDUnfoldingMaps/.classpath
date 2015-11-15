@@ -3,7 +3,11 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="data"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="lib/core.jar"/>
+	<classpathentry kind="lib" path="lib/core.jar" sourcepath="C:/eclipse/processing-master/core">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/C:/eclipse/workspace_maps/UCSDUnfoldingMaps/lib/processing-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="lib/gluegen-rt.jar"/>
 	<classpathentry kind="lib" path="lib/jogl-all.jar">
 		<attributes>
@@ -11,9 +15,17 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/log4j-1.2.15.jar"/>
-	<classpathentry kind="lib" path="lib/sqlite-jdbc-3.7.2.jar"/>
+	<classpathentry kind="lib" path="lib/sqlite-jdbc-3.7.2.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/C:/eclipse/sqlite-jdbc-3.7.2-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="lib/json4processing.jar"/>
 	<classpathentry kind="lib" path="lib/libTUIO.jar"/>
-	<classpathentry kind="lib" path="lib/unfolding.0.9.7-uscd.jar"/>
+	<classpathentry kind="lib" path="lib/unfolding.0.9.7-uscd.jar" sourcepath="C:/eclipse/unfolding-master/src">
+		<attributes>
+			<attribute name="javadoc_location" value="http://unfoldingmaps.org/javadoc/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="build"/>
 </classpath>
