@@ -150,7 +150,7 @@ public class EarthquakeCityMap extends PApplet {
 	public void draw() {
 		background(10);
 		map.draw();
-		addKey();
+		addKeymine();
 		for (Marker marker : map.getMarkers()) {
 			if (marker.isSelected()) {
 				TextWriter mytext = new TextWriter(this, color(0, 0, 0), "Arial", 16);
@@ -191,33 +191,55 @@ public class EarthquakeCityMap extends PApplet {
 			}
 		}
 	}
+	private void addKey() {	
+		// Remember you can use Processing's graphics methods here
+		fill(255, 250, 240);
+		rect(25, 50, 150, 250);
+		
+		fill(0);
+		textAlign(LEFT, CENTER);
+		textSize(12);
+		text("Earthquake Key", 50, 75);
+		
+		fill(color(255, 0, 0));
+		ellipse(50, 125, 15, 15);
+		fill(color(255, 255, 0));
+		ellipse(50, 175, 10, 10);
+		fill(color(0, 0, 255));
+		ellipse(50, 225, 5, 5);
+		
+		fill(0, 0, 0);
+		text("5.0+ Magnitude", 75, 125);
+		text("4.0+ Magnitude", 75, 175);
+		text("Below 4.0", 75, 225);
+	}
 
 	// helper method to draw key in GUI
 	// TODO: Implement this method to draw the key
-	private void addKey() {
+	private void addKeymine() {
 		// Remember you can use Processing's graphics methods here
 		TextWriter mytext = new TextWriter(this, color(0, 0, 0), "Arial", 14);
 		fill(255, 255, 255);
 		rect(10, 50, 180, 500);
 		
 		fill( color(255, 255, 0));
-		this.ellipse(25, 75, 5, 5);
+		ellipse(25, 75, 5, 5);
 		mytext.render("0 - 3", 40, 80);
 		
 		fill( color(153, 255, 51));
-		this.ellipse(25, 90, 7, 7);
+		ellipse(25, 90, 7, 7);
 		mytext.render("3 - 4", 40, 95);
 		
 		fill(color(0, 255, 0));
-		this.ellipse(25, 105, 10, 10);
+		ellipse(25, 105, 10, 10);
 		mytext.render("3 - 4.5", 40, 110);
 		
 		fill(color(255, 153, 51));
-		this.ellipse(25, 125, 12, 12);
+		ellipse(25, 125, 12, 12);
 		mytext.render("4.5 - 5.5", 40, 130);
 		
 		fill(color(255, 0, 0));
-		this.ellipse(25, 150, 15, 15);
+		ellipse(25, 150, 15, 15);
 		mytext.render("> 5.5", 40, 155);
 		
 		
@@ -233,14 +255,14 @@ public class EarthquakeCityMap extends PApplet {
 		int lineSpaceing;
 
 		public TextWriter(PApplet PA, int color, String face, int size) {
-			f = createFont("Arial", size, true);
-			this.color = color;
+			//f = createFont("Arial", size, true);
+			color = color;
 			lineSpaceing = size;
 		}
 
 		public void render(String text, int x, int y) {
 			fill(0, 0, 0);
-			textFont(f);
+			//textFont(f);
 			text(text, x, y);
 			lastx = x;
 			lasty = y;
@@ -248,14 +270,14 @@ public class EarthquakeCityMap extends PApplet {
 		}
 		public void render(String text, int size) {
 			fill(0, 0, 0);
-			textFont(f,size);
+			//textFont(f,size);
 			lasty += lineSpaceing;
 			text(text, lastx, lasty);
 
 		}
 		public void render(String text) {
 			fill(0, 0, 0);
-			textFont(f);
+			//textFont(f);
 			lasty += lineSpaceing;
 			text(text, lastx, lasty);
 
