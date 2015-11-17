@@ -1,0 +1,108 @@
+RELEASE NOTES 
+
+
+0.9.8beta - tba
+-----------------------------
+
+Tested with Processing 3.0
+Updated all examples 
+
+
+0.9.7beta - tba
+-----------------------------
+Bug Fixes
+- Fixed MultiLineString in GeoJSONReader. Thanks to Tutkain for report.
+- Fixed Polygon with interior rings in GeoJSONReader. #103
+- Fixed mapChanged method.
+- Fixed DebugDisplay. UI resources in JAR now. #64
+
+Features
+- Added vector tile support.
+- Added vector tile examples.
+- Added rectangular panning restriction.
+- Added setProperty to Marker
+- Added option to set MultiMarker class for MarkerFactory. #115
+
+Other
+- Tested with Processing 3.0a
+- Cleaned up and fixed some examples.
+
+
+0.9.6 - 16 June 2014
+-----------------------------
+
+Bug Fixes
+- Fixed Google Maps provider.
+- Fixed handling empty properties in geo files.
+- Fixed empty MarkerManager handling when not default. Thanks to @antjkennedy.
+
+Features
+- Added Polyline parsing to GeoUtils.
+- Added zoomToFit and zoomAndPanToFit.
+- Added getBoundingBox to GeoUtils.
+- Added tile providers (see #85). Thanks to Jacek Radzikowski.
+
+Other
+- Using Processing's new library installation mechanism.
+- Switched parameters in zoomAndPanTo.
+- Added source to distribution zip for Processing (as per Library Guidelines. Find the source also at our repository.) 
+
+
+0.9.5
+-----------------------------
+
+Bug Fixes
+- Fixed map transparency issues.
+
+Features 
+- Added allTilesLoaded() method.
+- Added moveBy(dx, dy) method
+- Simplified MBTiles map provider
+- Updated to Processing 2.1.1
+
+Documentation
+- Added more examples (Processing and Eclipse distributions)
+- Updated examples
+
+
+0.9.4beta
+-----------------------------
+First version using Processing 2 
+
+- Moved core and examples to Processing 2 and its new Java2D/OpenGL renderer.
+- Cleaned up different MapDisplays and MapDisplayFactory
+- Fixed offscreen buffering
+- Updated libraries to new Processing and JOGL
+- Updated event system to Processing 2 one
+- Modified Shader mechanism and examples
+- Switched to new XML, JSON, CVS libs for data imports
+
+
+
+0.9.3 
+-----------------------------
+
+Bug Fixes
+- Fixed tweening (#5). Map now can animate between states, optionally.
+- Fixed centroid algorithm (#47).
+- Changed default MarkerManager behavior. Now the first manually added replaces the empty default.
+- Fixed marker precision issue (#66). Now nearby markers are displayed as two distinct markers even on high zoom levels. 
+- Switched default map provider.
+
+Features
+- Added mapChanged and tilesLoaded methods. Similar to Processing's simple events such as mouseMoved these allow easily reacting to map events.
+- Enhanced data properties functionality in both Markers and Features.
+- Added DebugDisplay.
+- Added hidden flag to markers.
+- Added many utility and convenience methods.
+
+Documentation
+- Added various more examples (in Eclipse distribution)
+- Added some more examples (in Processing distribution)
+- Added and enhanced API JavaDocs, and inline documentation.
+
+Other
+- Added MIT license.
+- Cleaned up distribution.
+- Started release notes. :)
+

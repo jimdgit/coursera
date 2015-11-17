@@ -181,6 +181,7 @@ public class EarthquakeCityMap extends PApplet {
 		Marker hitMarker = map.getFirstHitMarker(mouseX, mouseY);
 
 		if (hitMarker != null) {
+			// De-select all otherwise two will be selected.
 			for (Marker marker : map.getMarkers()) {
 				marker.setSelected(false);
 			}
@@ -188,7 +189,7 @@ public class EarthquakeCityMap extends PApplet {
 			hitMarker.setSelected(true);
 
 		} else {
-			// Deselect all other markers
+			// De-select all other markers
 			for (Marker marker : map.getMarkers()) {
 				marker.setSelected(false);
 			}

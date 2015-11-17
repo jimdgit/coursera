@@ -1,0 +1,9 @@
+bin/*
+.classpath
+build/
+dist/
+doc/
+.DS_Store
+data/splendor-big.png
+src/de/fhpotsdam/unfolding/mapdisplay/GLGraphicsMapDisplayTransparentTest.java
+/bin/
