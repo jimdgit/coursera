@@ -13,7 +13,10 @@ public class Person
 	{ 
 		this.name = name; 
 	}
-	
+	public String getName()
+	{
+		return name;
+	}
 	public boolean isAsleep(int hr)  
 	{ 
 		return 22 < hr || 7 > hr; 
