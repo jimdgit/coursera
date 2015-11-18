@@ -196,12 +196,9 @@ public class EarthquakeCityMap extends PApplet {
 	{
 		int counter = 0;
 		for(Marker qmarker : quakeMarkers) {
-			EarthquakeMarker eqMarker = (EarthquakeMarker)qmarker;
-			if (eqMarker.isOnLand()) {
-			String quakeCountry = qmarker.getProperty("country").toString();
-			if( country.equals(quakeCountry)) {
+			if(((EarthquakeMarker)qmarker).isOnLand() 
+			 && qmarker.getProperty("country").toString().equals(country)) {
 				++counter;
-			}
 			}
 		}
 		return counter;
