@@ -149,7 +149,29 @@ public class EarthquakeCityMap extends PApplet {
 		// finish implementing and use this method, if it helps.
 		return m;
 	}
+public void drawInfo() {
+	for (Marker marker : map.getMarkers()) {
+		if (marker.isSelected()) {
+			TextWriter mytext = new TextWriter(this, color(0, 0, 0), 16);
+			fill(255, 255, 255);
+			rect(200, 50, 300, 100);
+			mytext.render("Marker", 220, 65);
+			HashMap<String, Object> props = marker.getProperties();
+			if (props.size() > 0) {
 
+				PointFeature feature = PointFeature.class.cast(props.get("feature"));
+				//s.substring(s.lastIndexOf(':') + 1);
+				String title = feature.getProperty("title").toString();
+				title = title.substring(title.indexOf("-") + 2);
+				mytext.render( title);
+				mytext.render("magnitude: "+ feature.getProperty("magnitude").toString());
+				mytext.render("depth: "+ feature.getProperty("depth").toString());
+				mytext.render("age: "+ feature.getProperty("age").toString());
+			}
+			break;
+		}
+	}	
+}
 	public void draw() {
 		background(10);
 		map.draw();

@@ -14,6 +14,7 @@ import de.fhpotsdam.unfolding.marker.MultiMarker;
 import de.fhpotsdam.unfolding.providers.Google;
 import de.fhpotsdam.unfolding.providers.MBTilesMapProvider;
 import de.fhpotsdam.unfolding.utils.MapUtils;
+import module4.EarthquakeMarker;
 import parsing.ParseFeed;
 import processing.core.PApplet;
 
@@ -111,7 +112,7 @@ public class EarthquakeCityMap extends PApplet {
 	    }
 
 	    // could be used for debugging
-	    printQuakes();
+	   printQuakes();
 	 		
 	    // (3) Add markers to map
 	    //     NOTE: Country markers are not added to the map.  They are used
@@ -165,7 +166,13 @@ public class EarthquakeCityMap extends PApplet {
 		// IMPLEMENT THIS: loop over all countries to check if location is in any of them
 		
 		// TODO: Implement this method using the helper method isInCountry
-		
+		for(Marker country : countryMarkers )
+		{
+			if(isInCountry( earthquake,  country)){
+				return true;
+			}
+				
+		}
 		// not inside any country
 		return false;
 	}
@@ -179,6 +186,25 @@ public class EarthquakeCityMap extends PApplet {
 	private void printQuakes() 
 	{
 		// TODO: Implement this method
+		for(Marker marker : countryMarkers) {
+			String country = marker.getProperty("name").toString();
+			int count = countQuakesInCountry(country);
+			System.out.println(country + " : " + count);
+		}
+	}
+	private int countQuakesInCountry(String country)
+	{
+		int counter = 0;
+		for(Marker qmarker : quakeMarkers) {
+			EarthquakeMarker eqMarker = (EarthquakeMarker)qmarker;
+			if (eqMarker.isOnLand()) {
+			String quakeCountry = qmarker.getProperty("country").toString();
+			if( country.equals(quakeCountry)) {
+				++counter;
+			}
+			}
+		}
+		return counter;
 	}
 	
 	
