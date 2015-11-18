@@ -40,7 +40,7 @@
 {"type":"Feature","properties":{"name":"Tehran", "population":"8.15", "country" : "Iran", "coastal" : "false"},"geometry":{"type":"Point","coordinates":[51.4231, 35.6961]}},
 {"type":"Feature","properties":{"name":"Cairo", "population":"10.23", "country" : "Egypt", "coastal" : "false"},"geometry":{"type":"Point","coordinates":[31.2333, 30.0500]}}
 {"type":"Feature","properties":{"name":"Lake Worth", "population":".036", "country" : "United States", "coastal" : "true"},"geometry":{"type":"Point","coordinates":[26.616894, -80.063551]}}
-{"type":"Feature","properties":{"name":"New Your City", "population":"8.406", "country" : "United States", "coastal" : "true"},"geometry":{"type":"Point","coordinates":[40.726915, -74.022286]}}
+{"type":"Feature","properties":{"name":"New York City", "population":"8.406", "country" : "United States", "coastal" : "true"},"geometry":{"type":"Point","coordinates":[40.726915, -74.022286]}}
 ]
 }
 
