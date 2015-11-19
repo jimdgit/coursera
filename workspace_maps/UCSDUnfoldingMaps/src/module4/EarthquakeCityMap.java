@@ -185,7 +185,6 @@ public class EarthquakeCityMap extends PApplet {
 	// And LandQuakeMarkers have a "country" property set.
 	private void printQuakes() 
 	{
-		// TODO: Implement this method
 		for(Marker marker : countryMarkers) {
 			String country = marker.getProperty("name").toString();
 			int count = countQuakesInCountry(country);
