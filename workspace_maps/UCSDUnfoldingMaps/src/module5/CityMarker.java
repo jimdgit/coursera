@@ -31,13 +31,7 @@ public class CityMarker extends CommonMarker {
 		super(((PointFeature)city).getLocation(), city.getProperties());
 		// Cities have properties: "name" (city name), "country" (country name)
 		// and "population" (population, in millions)
-		HashMap<String,Object> hmap = getProperties();
-		String name = hmap.get("name").toString();
-		String country = hmap.get("country").toString();
-		String population = hmap.get("population").toString();
-		String info = hmap.get("name").toString() + ", " + hmap.get("country").toString()
-				         + " "+ hmap.get("population").toString() + "M";
-
+	
 		
 	}
 

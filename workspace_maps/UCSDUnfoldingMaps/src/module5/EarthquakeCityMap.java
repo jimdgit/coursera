@@ -14,8 +14,10 @@ import de.fhpotsdam.unfolding.marker.MultiMarker;
 import de.fhpotsdam.unfolding.providers.Google;
 import de.fhpotsdam.unfolding.providers.MBTilesMapProvider;
 import de.fhpotsdam.unfolding.utils.MapUtils;
+import de.fhpotsdam.unfolding.utils.ScreenPosition;
 import parsing.ParseFeed;
 import processing.core.PApplet;
+import processing.core.PGraphics;
 
 /** EarthquakeCityMap
  * An application with an interactive map displaying earthquake data.
@@ -119,7 +121,12 @@ public class EarthquakeCityMap extends PApplet {
 	public void draw() {
 		background(0);
 		map.draw();
+		if (lastSelected != null) {
+			PGraphics pg = map.mapDisplay.getOuterPG();
+			ScreenPosition sp = lastSelected.getScreenPosition(map);
+			lastSelected.showTitle(pg, sp.x, sp.y);
 			
+		}
 		
 		addKey();
 		
