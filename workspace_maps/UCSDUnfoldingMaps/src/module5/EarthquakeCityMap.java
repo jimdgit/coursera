@@ -119,6 +119,8 @@ public class EarthquakeCityMap extends PApplet {
 	public void draw() {
 		background(0);
 		map.draw();
+			
+		
 		addKey();
 		
 	}
@@ -136,7 +138,8 @@ public class EarthquakeCityMap extends PApplet {
 		
 		}
 		selectMarkerIfHover(quakeMarkers);
-		selectMarkerIfHover(cityMarkers);
+		if(lastSelected == null)
+		 selectMarkerIfHover(cityMarkers);
 	}
 	
 	// If there is a marker under the cursor, and lastSelected is null 
@@ -145,7 +148,17 @@ public class EarthquakeCityMap extends PApplet {
 	// 
 	private void selectMarkerIfHover(List<Marker> markers)
 	{
-		// TODO: Implement this method
+		for(Marker m : markers){
+			if( m.isInside(map, mouseX, mouseY) ){
+				m.setHidden(false);
+				m.setSelected(true);
+				lastSelected =(CommonMarker) m;
+				return;
+			}
+        
+			
+		}
+			
 	}
 	
 	/** The event handler for mouse clicks

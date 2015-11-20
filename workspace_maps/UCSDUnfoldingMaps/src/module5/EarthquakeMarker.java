@@ -1,5 +1,7 @@
 package module5;
 
+import java.util.HashMap;
+
 import de.fhpotsdam.unfolding.data.PointFeature;
 import processing.core.PGraphics;
 
@@ -93,7 +95,13 @@ public abstract class EarthquakeMarker extends CommonMarker
 	@Override
 	public void showTitle(PGraphics pg, float x, float y)
 	{
-		// TODO: Implement this method
+		HashMap<String,Object> hmap = getProperties();
+		String info = hmap.get("title").toString();
+		pg.fill(255, 255, 255);
+		pg.rect(x, y, 250, 20);
+		pg.fill(0);
+		pg.text(info, x+5, y+15);
+
 		
 	}
 

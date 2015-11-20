@@ -1,5 +1,7 @@
 package module5;
 
+import java.util.HashMap;
+
 import de.fhpotsdam.unfolding.data.Feature;
 import de.fhpotsdam.unfolding.data.PointFeature;
 import de.fhpotsdam.unfolding.geo.Location;
@@ -29,6 +31,14 @@ public class CityMarker extends CommonMarker {
 		super(((PointFeature)city).getLocation(), city.getProperties());
 		// Cities have properties: "name" (city name), "country" (country name)
 		// and "population" (population, in millions)
+		HashMap<String,Object> hmap = getProperties();
+		String name = hmap.get("name").toString();
+		String country = hmap.get("country").toString();
+		String population = hmap.get("population").toString();
+		String info = hmap.get("name").toString() + ", " + hmap.get("country").toString()
+				         + " "+ hmap.get("population").toString() + "M";
+
+		
 	}
 
 	
@@ -36,6 +46,7 @@ public class CityMarker extends CommonMarker {
 	 * Implementation of method to draw marker on the map.
 	 */
 	public void draw(PGraphics pg, float x, float y) {
+		super.draw(pg,x,y);
 		// Save previous drawing style
 		pg.pushStyle();
 		
@@ -48,6 +59,7 @@ public class CityMarker extends CommonMarker {
 	}
 	public  void drawMarker(PGraphics pg, float x, float y)
 	{
+	
 		
 	}
 	
@@ -55,7 +67,13 @@ public class CityMarker extends CommonMarker {
 	public void showTitle(PGraphics pg, float x, float y)
 	{
 		
-		// TODO: Implement this method
+		HashMap<String,Object> hmap = getProperties();
+		String info = hmap.get("name").toString() + ", " + hmap.get("country").toString()
+		         + " "+ hmap.get("population").toString() + "M";
+		pg.fill(255, 255, 255);
+		pg.rect(x, y, 250, 20);
+		pg.fill(0);
+		pg.text(info, x+5, y+15);
 	}
 	
 	
