@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.9" icons="true" always-add-relationships="true" generalizations="true" realizations="true" 
+  associations="true" dependencies="true" nesting-relationships="true" router="FAN">  
+  <class id="1" language="java" name="de.fhpotsdam.unfolding.marker.AbstractMarker" project="UCSDUnfoldingMaps" 
+    file="/UCSDUnfoldingMaps/lib/unfolding.0.9.7-uscd.jar" binary="true" corner="BOTTOM_RIGHT">    
+    <position height="59" width="272" x="35" y="114"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="de.fhpotsdam.unfolding.marker.SimplePointMarker" project="UCSDUnfoldingMaps" 
+    file="/UCSDUnfoldingMaps/lib/unfolding.0.9.7-uscd.jar" binary="true" corner="BOTTOM_RIGHT">    
+    <position height="59" width="284" x="29" y="203"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="module5.CommonMarker" project="UCSDUnfoldingMaps" 
+    file="/UCSDUnfoldingMaps/src/module5/CommonMarker.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="63" width="310" x="16" y="291"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="module5.EarthquakeMarker" project="UCSDUnfoldingMaps" 
+    file="/UCSDUnfoldingMaps/src/module5/EarthquakeMarker.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="66" width="181" x="7" y="411"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="module5.LandQuakeMarker" project="UCSDUnfoldingMaps" 
+    file="/UCSDUnfoldingMaps/src/module5/LandQuakeMarker.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="61" width="139" x="188" y="536"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="module5.OceanQuakeMarker" project="UCSDUnfoldingMaps" 
+    file="/UCSDUnfoldingMaps/src/module5/OceanQuakeMarker.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="67" width="151" x="4" y="533"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="7" language="java" name="de.fhpotsdam.unfolding.marker.Marker" project="UCSDUnfoldingMaps" 
+    file="/UCSDUnfoldingMaps/lib/unfolding.0.9.7-uscd.jar" binary="true" corner="BOTTOM_RIGHT">    
+    <position height="58" width="240" x="53" y="11"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="8" language="java" name="module5.CityMarker" project="UCSDUnfoldingMaps" 
+    file="/UCSDUnfoldingMaps/src/module5/CityMarker.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="59" width="180" x="225" y="414"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <generalization id="9">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="4"/>  
+  </generalization>  
+  <generalization id="10">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="4"/>  
+  </generalization>  
+  <realization id="11">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="7"/>  
+  </realization>  
+  <generalization id="12">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <generalization id="13">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="3"/>  
+  </generalization>  
+  <generalization id="14">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <generalization id="15">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="3"/>  
+  </generalization>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>
