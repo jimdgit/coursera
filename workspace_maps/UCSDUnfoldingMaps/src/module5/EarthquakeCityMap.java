@@ -125,6 +125,7 @@ public class EarthquakeCityMap extends PApplet {
 	    p =loadImage("palmTrees.jpg");
 		image(p,0, 0);
 		map.draw();
+		addKey();
 		if (lastSelected != null) {
 			PGraphics buffer;
 			buffer =createGraphics(300, 20);
@@ -132,11 +133,19 @@ public class EarthquakeCityMap extends PApplet {
 			buffer.beginDraw();
 			lastSelected.showTitle(buffer, 0, 0);
 			buffer.endDraw();
-			image(buffer, sp.x-100, sp.y+5);
+			float x = sp.x-lastSelected.titletextwidth/2;
+			if( sp.x + lastSelected.titletextwidth > 850)
+				x = 850 - lastSelected.titletextwidth;
+			else if( x < 200){
+				x = 200;
+			} else {
+				x = sp.x-lastSelected.titletextwidth/2;
+			}
+			image(buffer, x, sp.y+5);
 			image(buffer, 0, 0);
 		}
 		
-		addKey();
+		
 		
 	}
 	

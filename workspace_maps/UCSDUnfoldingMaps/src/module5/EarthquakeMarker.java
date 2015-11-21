@@ -98,11 +98,11 @@ public abstract class EarthquakeMarker extends CommonMarker
 		HashMap<String,Object> hmap = getProperties();
 		String info = hmap.get("title").toString();
 		pg.fill(255, 255, 255);
-		pg.rect(x, y, 250, 20);
+		pg.rect(x, y, pg.textWidth(info), 20);
 		pg.fill(0);
 		pg.text(info, x+5, y+15);
-
-		
+		titletext = info;
+		titletextwidth = pg.textWidth(info);
 	}
 
 	

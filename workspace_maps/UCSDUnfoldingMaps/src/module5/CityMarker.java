@@ -64,10 +64,13 @@ public class CityMarker extends CommonMarker {
 		HashMap<String,Object> hmap = getProperties();
 		String info = hmap.get("name").toString() + ", " + hmap.get("country").toString()
 		         + " "+ hmap.get("population").toString() + "M";
+		
 		pg.fill(255, 255, 255);
-		pg.rect(x, y, 250, 20);
+		pg.rect(x, y, pg.textWidth(info) +5, 20);
 		pg.fill(0);
 		pg.text(info, x+5, y+15);
+		titletext = info;
+		titletextwidth = pg.textWidth(info);
 	}
 	
 	
