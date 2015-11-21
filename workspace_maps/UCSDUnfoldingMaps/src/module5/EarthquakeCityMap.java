@@ -244,6 +244,7 @@ public class EarthquakeCityMap extends PApplet {
 		{
 			// find and city in threat zone
 			threatDistance = (float) ((EarthquakeMarker) hitMarker).threatCircle();
+			// TODO: Add a list of cities.
 			Marker m = ((EarthquakeMarker) hitMarker).findCitysInThreatCircle( cityMarkers);
 			hideMarkers();
 			if(m != null){
