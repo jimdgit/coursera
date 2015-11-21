@@ -172,6 +172,8 @@ public class EarthquakeCityMap extends PApplet {
 					distance = (float) lastSelected.getDistanceTo(targetLocation);
 				}
 				cropped = buffer2.get((int)(900/2-(sp.x-200)),(int) (1100/2-(sp.y-50)), 650, 600);
+				if( r > 650) // If the radius is bigger than the whole map, then just make it cover all.
+				cropped = buffer2.get((int)0,(int) 0, 650, 600);
 				image(cropped,200,50);
 
 				
