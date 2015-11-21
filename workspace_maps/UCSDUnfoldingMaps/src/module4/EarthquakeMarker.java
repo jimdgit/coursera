@@ -62,6 +62,7 @@ public abstract class EarthquakeMarker extends SimplePointMarker
 		colorDetermine(pg);
 		
 		// call abstract method implemented in child class to draw marker shape
+		if(isHidden() == false)
 		drawEarthquake(pg, x, y);
 		
 		// OPTIONAL TODO: draw X over marker if within past day		

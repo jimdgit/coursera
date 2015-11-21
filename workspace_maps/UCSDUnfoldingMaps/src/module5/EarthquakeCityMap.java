@@ -1,6 +1,7 @@
 package module5;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import de.fhpotsdam.unfolding.UnfoldingMap;
@@ -64,7 +65,8 @@ public class EarthquakeCityMap extends PApplet {
 	// NEW IN MODULE 5
 	private CommonMarker lastSelected;
 	private CommonMarker lastClicked;
-	
+	public float distance;
+	public float threatDistance;
 	public void setup() {		
 		// (1) Initializing canvas and map tiles
 		size(900, 700, OPENGL);
@@ -120,15 +122,20 @@ public class EarthquakeCityMap extends PApplet {
 	
 	
 	public void draw() {
+		
 		background(0);
 		PImage p;
 	    p =loadImage("palmTrees.jpg");
 		image(p,0, 0);
 		map.draw();
 		addKey();
-		if (lastSelected != null) {
+		if (lastSelected != null && !lastSelected.isHidden() ) {
 			PGraphics buffer;
+			PGraphics buffer2;
+			PImage cropped;
+
 			buffer =createGraphics(300, 20);
+			buffer2 =createGraphics(900, 1100);
 			ScreenPosition sp = lastSelected.getScreenPosition(map);
 			buffer.beginDraw();
 			lastSelected.showTitle(buffer, 0, 0);
@@ -141,8 +148,38 @@ public class EarthquakeCityMap extends PApplet {
 			} else {
 				x = sp.x-lastSelected.titletextwidth/2;
 			}
+			
+			if(lastSelected instanceof EarthquakeMarker) {
+				
+				Location l = getLocationByDistance(lastSelected.getLocation(), 
+						(float) ((EarthquakeMarker) lastSelected).threatCircle());
+				ScreenPosition lsp = map.getScreenPosition(l);
+				threatDistance = (float) ((EarthquakeMarker) lastSelected).threatCircle();
+				distance = (float) lastSelected.getDistanceTo(l);
+				buffer2.beginDraw();
+				buffer2.fill(0,255,0,25);
+				buffer2.stroke(255,0,0);
+				//noFill();
+				@SuppressWarnings("unused")
+				float r  = abs(sp.x-lsp.x);
+				
+				buffer2.ellipse(900/2, 1100/2,
+						abs(sp.x-lsp.x)*2f,abs(sp.x-lsp.x)*2f);
+				buffer2.endDraw();
+				Location targetLocation = findCityByName("San Juan");
+				if( targetLocation != null)
+				{
+					distance = (float) lastSelected.getDistanceTo(targetLocation);
+				}
+				cropped = buffer2.get((int)(900/2-(sp.x-200)),(int) (1100/2-(sp.y-50)), 650, 600);
+				image(cropped,200,50);
+
+				
+			}
 			image(buffer, x, sp.y+5);
 			image(buffer, 0, 0);
+			
+			
 		}
 		
 		
@@ -174,7 +211,7 @@ public class EarthquakeCityMap extends PApplet {
 	{
 		for(Marker m : markers){
 			if( m.isInside(map, mouseX, mouseY) ){
-				m.setHidden(false);
+				//m.setHidden(false);
 				m.setSelected(true);
 				lastSelected =(CommonMarker) m;
 				return;
@@ -196,6 +233,24 @@ public class EarthquakeCityMap extends PApplet {
 		// TODO: Implement this method
 		// Hint: You probably want a helper method or two to keep this code
 		// from getting too long/disorganized
+		if( lastClicked != null ) {
+			unhideMarkers();
+			lastClicked = null;
+		}
+		Marker hitMarker = map.getFirstHitMarker(mouseX, mouseY);
+		if(hitMarker != null)
+			lastClicked = (CommonMarker) hitMarker;
+		if(hitMarker instanceof EarthquakeMarker)
+		{
+			// find and city in threat zone
+			threatDistance = (float) ((EarthquakeMarker) hitMarker).threatCircle();
+			Marker m = ((EarthquakeMarker) hitMarker).findCitysInThreatCircle( cityMarkers);
+			hideMarkers();
+			if(m != null){
+				m.setHidden(false);
+			}
+			hitMarker.setHidden(false);
+		}
 	}
 	
 	
@@ -209,7 +264,17 @@ public class EarthquakeCityMap extends PApplet {
 			marker.setHidden(false);
 		}
 	}
+	public void hideMarkers()
+	{
+		for(Marker marker : quakeMarkers) {
+			marker.setHidden(true);
+		}
+		for(Marker marker : cityMarkers) {
+			marker.setHidden(true);
+		}
+
 	
+	}
 	// helper method to draw key in GUI
 	private void addKey() {	
 		// Remember you can use Processing's graphics methods here
@@ -352,4 +417,36 @@ public class EarthquakeCityMap extends PApplet {
 		return false;
 	}
 
+public Location findCityByName(String cityName)
+{
+	for(Marker m : cityMarkers){
+		HashMap<String,Object> hmap = m.getProperties();
+		if( hmap.get("name").toString().equals(cityName)) {
+			return m.getLocation();
+		}
+		
+	}
+	return null;
 }
+/**
+ Convert a distance to longitude, then offset the reference by that.
+ This is an attempt to convert distance to pixels.
+ @param reference A refernce location to compute from
+ @param distance A distance to add to the reference.
+*/
+public Location getLocationByDistance(Location reference, float distance)
+{
+	Location l = new Location(reference);
+	double radians = Math.toRadians(reference.getLat());
+	double thecos = Math.cos(radians);
+	//111.320*cos(latitude) km
+	l.setLon((float) (l.getLon() + (double) distance/(111.320*thecos)) );
+	return l;
+}
+
+
+}
+
+
+
+

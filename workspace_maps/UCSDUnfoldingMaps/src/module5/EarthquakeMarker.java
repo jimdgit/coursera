@@ -1,8 +1,11 @@
 package module5;
 
 import java.util.HashMap;
+import java.util.List;
 
 import de.fhpotsdam.unfolding.data.PointFeature;
+import de.fhpotsdam.unfolding.geo.Location;
+import de.fhpotsdam.unfolding.marker.Marker;
 import processing.core.PGraphics;
 
 /** Implements a visual marker for earthquakes on an earthquake map
@@ -86,17 +89,19 @@ public abstract class EarthquakeMarker extends CommonMarker
 			
 		}
 		
+
 		// reset to previous styling
 		pg.popStyle();
 		
 	}
+	// ok lets see if I can type any better here....
 
 	/** Show the title of the earthquake if this marker is selected */
 	@Override
 	public void showTitle(PGraphics pg, float x, float y)
 	{
 		HashMap<String,Object> hmap = getProperties();
-		String info = hmap.get("title").toString();
+		String info = hmap.get("title").toString() + " " + Double.toString(threatCircle());
 		pg.fill(255, 255, 255);
 		pg.rect(x, y, pg.textWidth(info), 20);
 		pg.fill(0);
@@ -134,7 +139,21 @@ public abstract class EarthquakeMarker extends CommonMarker
 			pg.fill(255, 0, 0);
 		}
 	}
-	
+	public Marker findCitysInThreatCircle(List<Marker> cityMarkers)
+	{
+		for(Marker m : cityMarkers){
+			if(getLocation().getDistance(m.getLocation()) < threatCircle())
+			{
+				HashMap<String,Object> hmap = m.getProperties();
+				System.out.println(hmap.get("name").toString() + " "  + getLocation().getDistance(m.getLocation()));
+				return  m;
+			}
+
+			
+		}
+		System.out.println("no citys found");
+		return null;
+	}	
 	
 	/*
 	 * getters for earthquake properties

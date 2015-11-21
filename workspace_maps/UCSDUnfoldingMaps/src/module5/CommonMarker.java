@@ -1,5 +1,6 @@
 package module5;
 
+import de.fhpotsdam.unfolding.UnfoldingMap;
 import de.fhpotsdam.unfolding.geo.Location;
 import de.fhpotsdam.unfolding.marker.SimplePointMarker;
 import processing.core.PGraphics;
@@ -16,12 +17,17 @@ public abstract class CommonMarker extends SimplePointMarker {
 	protected boolean clicked = false;
 	public String titletext;
 	public float titletextwidth;
+	public UnfoldingMap mymap;
 	public CommonMarker(Location location) {
 		super(location);
 	}
 	
 	public CommonMarker(Location location, java.util.HashMap<java.lang.String,java.lang.Object> properties) {
 		super(location, properties);
+	}
+	public CommonMarker(Location location, java.util.HashMap<java.lang.String,java.lang.Object> properties, UnfoldingMap map) {
+		super(location, properties);
+		mymap = map;
 	}
 	
 	// Getter method for clicked field

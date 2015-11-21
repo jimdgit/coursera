@@ -39,6 +39,8 @@ public class CityMarker extends CommonMarker {
 	/**
 	 * Implementation of method to draw marker on the map.
 	 */
+	// Need to get rid of this one or it will be called instead of common marker draw.
+	/*
 	public void draw(PGraphics pg, float x, float y) {
 		super.draw(pg,x,y);
 		// Save previous drawing style
@@ -51,10 +53,18 @@ public class CityMarker extends CommonMarker {
 		// Restore previous drawing style
 		pg.popStyle();
 	}
+	*/
 	public  void drawMarker(PGraphics pg, float x, float y)
 	{
 	
+		pg.pushStyle();
 		
+		// IMPLEMENT: drawing triangle for each city
+		pg.fill(0, 255, 0);
+		pg.triangle(x, y-TRI_SIZE, x-TRI_SIZE, y+TRI_SIZE, x+TRI_SIZE, y+TRI_SIZE);
+		
+		// Restore previous drawing style
+		pg.popStyle();
 	}
 	
 	/** Show the title of the city if this marker is selected */
