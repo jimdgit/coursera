@@ -18,6 +18,7 @@ import de.fhpotsdam.unfolding.utils.ScreenPosition;
 import parsing.ParseFeed;
 import processing.core.PApplet;
 import processing.core.PGraphics;
+import processing.core.PImage;
 
 /** EarthquakeCityMap
  * An application with an interactive map displaying earthquake data.
@@ -120,12 +121,19 @@ public class EarthquakeCityMap extends PApplet {
 	
 	public void draw() {
 		background(0);
+		PImage p;
+	    p =loadImage("palmTrees.jpg");
+		image(p,0, 0);
 		map.draw();
 		if (lastSelected != null) {
-			PGraphics pg = map.mapDisplay.getOuterPG();
+			PGraphics buffer;
+			buffer =createGraphics(300, 20);
 			ScreenPosition sp = lastSelected.getScreenPosition(map);
-			lastSelected.showTitle(pg, sp.x, sp.y);
-			
+			buffer.beginDraw();
+			lastSelected.showTitle(buffer, 0, 0);
+			buffer.endDraw();
+			image(buffer, sp.x-100, sp.y+5);
+			image(buffer, 0, 0);
 		}
 		
 		addKey();
