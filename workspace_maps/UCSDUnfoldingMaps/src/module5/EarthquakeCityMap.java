@@ -124,52 +124,62 @@ public class EarthquakeCityMap extends PApplet {
 	public void draw() {
 		
 		background(0);
-		//PImage p;
-	    //p =loadImage("palmTrees.jpg");
-		//image(p,0, 0);
 		map.draw();
 		addKey();
 		if (lastSelected != null && !lastSelected.isHidden() ) {
 			drawTitle();			
 			
 			if(lastSelected instanceof EarthquakeMarker) {
-				ScreenPosition sp2 = lastSelected.getScreenPosition(map);
-				PGraphics buffer2;
-				PImage cropped;
-				buffer2 =createGraphics(900, 1100);
-				Location l = getLocationByDistance(lastSelected.getLocation(), 
-						(float) ((EarthquakeMarker) lastSelected).threatCircle());
-				ScreenPosition lsp = map.getScreenPosition(l);
-				threatDistance = (float) ((EarthquakeMarker) lastSelected).threatCircle();
-				distance = (float) lastSelected.getDistanceTo(l);
-				buffer2.beginDraw();
-				buffer2.fill(0,255,0,25);
-				buffer2.stroke(255,0,0);
-				//noFill();
-				@SuppressWarnings("unused")
-				float r  = abs(sp2.x-lsp.x);
-				
-				buffer2.ellipse(900/2, 1100/2,
-						abs(sp2.x-lsp.x)*2f,abs(sp2.x-lsp.x)*2f);
-				buffer2.endDraw();
-				Location targetLocation = findCityByName("San Juan");
-				if( targetLocation != null)
-				{
-					distance = (float) lastSelected.getDistanceTo(targetLocation);
-				}
-				cropped = buffer2.get((int)(900/2-(sp2.x-200)),(int) (1100/2-(sp2.y-50)), 650, 600);
-				if( r > 650) // If the radius is bigger than the whole map, then just make it cover all.
-				cropped = buffer2.get((int)0,(int) 0, 650, 600);
-				image(cropped,200,50);
-
-				
+				drawThreatCircle();
 			}
 		}
-		
-		
-		
+				
 	}
 
+
+	/**
+	 * Draws the threat circle to and off screen buffer and renders it.
+	 */
+	public void drawThreatCircle() {
+		ScreenPosition sp = lastSelected.getScreenPosition(map);
+		PGraphics buffer;
+		PImage cropped;
+		
+		Location l = getLocationByDistance(lastSelected.getLocation(), 
+				(float) ((EarthquakeMarker) lastSelected).threatCircle());
+		ScreenPosition lsp = map.getScreenPosition(l);
+		float r  = abs(sp.x-lsp.x);
+		threatDistance = (float) ((EarthquakeMarker) lastSelected).threatCircle();
+		distance = (float) lastSelected.getDistanceTo(l);
+		
+		buffer =createGraphics(900, 1100);
+		renderThreatCircle(buffer, r);
+		
+		cropped = buffer.get((int)(900/2-(sp.x-200)),(int) (1100/2-(sp.y-50)), 650, 600);
+		if( r > 650) // If the radius is bigger than the whole map, then just make it cover all.
+		cropped = buffer.get((int)0,(int) 0, 650, 600);
+		image(cropped,200,50);
+	}
+
+
+	/**
+	 * Draw the threat circle into offscreen buffer.
+	 * @param buffer2
+	 * @param r
+	 */
+	public void renderThreatCircle(PGraphics buffer2, float r) {
+		buffer2.beginDraw();
+		buffer2.fill(0,255,0,25);
+		buffer2.stroke(255,0,0);
+		//noFill();
+		
+		buffer2.ellipse(900/2, 1100/2,r*2f,r*2f);
+		buffer2.endDraw();
+	}
+	/**
+	 * Draws the title of lastSelect to an off screen buffer
+	 * and renders it.
+	 */
 
 	public void drawTitle() {
 		PGraphics buffer;
@@ -181,6 +191,7 @@ public class EarthquakeCityMap extends PApplet {
 		buffer.endDraw();
 		// Adjust where title should go so not off edge.
 		float x = sp.x-lastSelected.titletextwidth/2;
+		//TODO: this code is a little broken.
 		if( sp.x + lastSelected.titletextwidth > 850)
 			x = 850 - lastSelected.titletextwidth;
 		else if( x < 200){
@@ -209,21 +220,21 @@ public class EarthquakeCityMap extends PApplet {
 		 selectMarkerIfHover(cityMarkers);
 	}
 	
-	// If there is a marker under the cursor, and lastSelected is null 
-	// set the lastSelected to be the first marker found under the cursor
-	// Make sure you do not select two markers.
-	// 
+	/**
+	 * If there is a marker under the cursor, and lastSelected is null 
+	 * set the lastSelected to be the first marker found under the cursor
+	 * Make sure you do not select two markers.
+	 * 
+	 * @param markers list
+	 */
 	private void selectMarkerIfHover(List<Marker> markers)
 	{
 		for(Marker m : markers){
 			if( m.isInside(map, mouseX, mouseY) ){
-				//m.setHidden(false);
 				m.setSelected(true);
 				lastSelected =(CommonMarker) m;
 				return;
-			}
-        
-			
+			}      		
 		}
 			
 	}
