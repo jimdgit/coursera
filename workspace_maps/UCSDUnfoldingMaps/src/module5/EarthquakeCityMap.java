@@ -246,6 +246,18 @@ public class EarthquakeCityMap extends PApplet {
 		{
 			earthQuakeClicked( hitMarker) ;
 		}
+		if(hitMarker instanceof CityMarker)
+		{
+			List <Marker> m = 
+					((CityMarker) hitMarker).findQuakesInThreatCircle(quakeMarkers);
+			hideMarkers();
+			hitMarker.setHidden(false);
+			if(!m.isEmpty()){
+				for( Marker lm : m){
+					lm.setHidden(false);
+				}
+			}
+		}
 	}
 	public void earthQuakeClicked(Marker hitMarker) {
 		// find and city in threat zone

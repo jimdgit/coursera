@@ -142,7 +142,7 @@ public abstract class EarthquakeMarker extends CommonMarker
 	}
 	public List<Marker> findCitysInThreatCircle(List<Marker> cityMarkers)
 	{
-		List<Marker> lcm = new  ArrayList<>();;
+		List<Marker> lcm = new  ArrayList<>();
 		for(Marker m : cityMarkers){
 			if(getLocation().getDistance(m.getLocation()) < threatCircle())
 			{
@@ -151,11 +151,10 @@ public abstract class EarthquakeMarker extends CommonMarker
 				System.out.println(hmap.get("name").toString() + " "  + getLocation().getDistance(m.getLocation()));
 				
 			}
-// 4.688254, -74.080215
-			
+	
 		}
 		if(lcm.isEmpty())
-		System.out.println("no citys found");
+			System.out.println("no citys found");
 		return  lcm;
 	}	
 	

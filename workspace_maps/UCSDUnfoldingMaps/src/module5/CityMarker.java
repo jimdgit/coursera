@@ -1,10 +1,13 @@
 package module5;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import de.fhpotsdam.unfolding.data.Feature;
 import de.fhpotsdam.unfolding.data.PointFeature;
 import de.fhpotsdam.unfolding.geo.Location;
+import de.fhpotsdam.unfolding.marker.Marker;
 import de.fhpotsdam.unfolding.marker.SimplePointMarker;
 import processing.core.PConstants;
 import processing.core.PGraphics;
@@ -83,7 +86,22 @@ public class CityMarker extends CommonMarker {
 		titletextwidth = pg.textWidth(info);
 	}
 	
-	
+	public List<Marker> findQuakesInThreatCircle(List<Marker> quakeMarkers)
+	{
+		List<Marker> quakes = new  ArrayList<>();
+		for(Marker m : quakeMarkers)
+		{
+			if(getLocation().getDistance(m.getLocation()) < ((EarthquakeMarker)m).threatCircle())
+			{
+				System.out.println("quake at " + m.getLocation().toString() );
+				quakes.add(m);
+			}
+		}
+		if(quakes.isEmpty())
+			System.out.println("no quakes found");
+		return quakes;
+		
+	}
 	
 	/* Local getters for some city properties.  
 	 */
