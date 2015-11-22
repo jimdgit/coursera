@@ -244,20 +244,23 @@ public class EarthquakeCityMap extends PApplet {
 			lastClicked = (CommonMarker) hitMarker;
 		if(hitMarker instanceof EarthquakeMarker)
 		{
-			// find and city in threat zone
-			threatDistance = (float) ((EarthquakeMarker) hitMarker).threatCircle();
-			// TODO: Add a list of cities.
-			List <Marker> m = ((EarthquakeMarker) hitMarker).findCitysInThreatCircle( cityMarkers);
-			hideMarkers();
-			if(!m.isEmpty()){
-				for( Marker lm : m){
-					lm.setHidden(false);
-				}
-			}
-			hitMarker.setHidden(false);
+			earthQuakeClicked( hitMarker) ;
 		}
 	}
-	
+	public void earthQuakeClicked(Marker hitMarker) {
+		// find and city in threat zone
+		threatDistance = (float) ((EarthquakeMarker) hitMarker).threatCircle();
+		
+		List <Marker> m = ((EarthquakeMarker) hitMarker).findCitysInThreatCircle( cityMarkers);
+		hideMarkers();
+		if(!m.isEmpty()){
+			for( Marker lm : m){
+				lm.setHidden(false);
+			}
+		}
+		hitMarker.setHidden(false);
+
+	}
 	
 	// loop over and unhide all markers
 	private void unhideMarkers() {
