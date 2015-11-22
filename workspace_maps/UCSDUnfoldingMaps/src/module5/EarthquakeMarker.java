@@ -1,5 +1,6 @@
 package module5;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -139,20 +140,23 @@ public abstract class EarthquakeMarker extends CommonMarker
 			pg.fill(255, 0, 0);
 		}
 	}
-	public Marker findCitysInThreatCircle(List<Marker> cityMarkers)
+	public List<Marker> findCitysInThreatCircle(List<Marker> cityMarkers)
 	{
+		List<Marker> lcm = new  ArrayList<>();;
 		for(Marker m : cityMarkers){
 			if(getLocation().getDistance(m.getLocation()) < threatCircle())
 			{
+				lcm.add((CityMarker) m);
 				HashMap<String,Object> hmap = m.getProperties();
 				System.out.println(hmap.get("name").toString() + " "  + getLocation().getDistance(m.getLocation()));
-				return  m;
+				
 			}
-
+// 4.688254, -74.080215
 			
 		}
+		if(lcm.isEmpty())
 		System.out.println("no citys found");
-		return null;
+		return  lcm;
 	}	
 	
 	/*

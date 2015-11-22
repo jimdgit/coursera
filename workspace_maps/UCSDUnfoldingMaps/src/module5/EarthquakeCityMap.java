@@ -124,9 +124,9 @@ public class EarthquakeCityMap extends PApplet {
 	public void draw() {
 		
 		background(0);
-		PImage p;
-	    p =loadImage("palmTrees.jpg");
-		image(p,0, 0);
+		//PImage p;
+	    //p =loadImage("palmTrees.jpg");
+		//image(p,0, 0);
 		map.draw();
 		addKey();
 		if (lastSelected != null && !lastSelected.isHidden() ) {
@@ -247,10 +247,12 @@ public class EarthquakeCityMap extends PApplet {
 			// find and city in threat zone
 			threatDistance = (float) ((EarthquakeMarker) hitMarker).threatCircle();
 			// TODO: Add a list of cities.
-			Marker m = ((EarthquakeMarker) hitMarker).findCitysInThreatCircle( cityMarkers);
+			List <Marker> m = ((EarthquakeMarker) hitMarker).findCitysInThreatCircle( cityMarkers);
 			hideMarkers();
-			if(m != null){
-				m.setHidden(false);
+			if(!m.isEmpty()){
+				for( Marker lm : m){
+					lm.setHidden(false);
+				}
 			}
 			hitMarker.setHidden(false);
 		}
