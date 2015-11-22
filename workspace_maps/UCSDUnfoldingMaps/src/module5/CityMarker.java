@@ -85,7 +85,11 @@ public class CityMarker extends CommonMarker {
 		titletext = info;
 		titletextwidth = pg.textWidth(info);
 	}
-	
+	/**
+	 * Find all quakes in which this city is in their threat circle.
+	 * @param quakeMarkers
+	 * @return
+	 */
 	public List<Marker> findQuakesInThreatCircle(List<Marker> quakeMarkers)
 	{
 		List<Marker> quakes = new  ArrayList<>();

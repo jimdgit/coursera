@@ -140,6 +140,11 @@ public abstract class EarthquakeMarker extends CommonMarker
 			pg.fill(255, 0, 0);
 		}
 	}
+	/**
+	 * Find all cities that this quake threatens.
+	 * @param cityMarkers
+	 * @return
+	 */
 	public List<Marker> findCitysInThreatCircle(List<Marker> cityMarkers)
 	{
 		List<Marker> lcm = new  ArrayList<>();

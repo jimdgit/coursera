@@ -130,27 +130,13 @@ public class EarthquakeCityMap extends PApplet {
 		map.draw();
 		addKey();
 		if (lastSelected != null && !lastSelected.isHidden() ) {
-			PGraphics buffer;
-			PGraphics buffer2;
-			PImage cropped;
-
-			buffer =createGraphics(300, 20);
-			buffer2 =createGraphics(900, 1100);
-			ScreenPosition sp = lastSelected.getScreenPosition(map);
-			buffer.beginDraw();
-			lastSelected.showTitle(buffer, 0, 0);
-			buffer.endDraw();
-			float x = sp.x-lastSelected.titletextwidth/2;
-			if( sp.x + lastSelected.titletextwidth > 850)
-				x = 850 - lastSelected.titletextwidth;
-			else if( x < 200){
-				x = 200;
-			} else {
-				x = sp.x-lastSelected.titletextwidth/2;
-			}
+			drawTitle();			
 			
 			if(lastSelected instanceof EarthquakeMarker) {
-				
+				ScreenPosition sp2 = lastSelected.getScreenPosition(map);
+				PGraphics buffer2;
+				PImage cropped;
+				buffer2 =createGraphics(900, 1100);
 				Location l = getLocationByDistance(lastSelected.getLocation(), 
 						(float) ((EarthquakeMarker) lastSelected).threatCircle());
 				ScreenPosition lsp = map.getScreenPosition(l);
@@ -161,31 +147,49 @@ public class EarthquakeCityMap extends PApplet {
 				buffer2.stroke(255,0,0);
 				//noFill();
 				@SuppressWarnings("unused")
-				float r  = abs(sp.x-lsp.x);
+				float r  = abs(sp2.x-lsp.x);
 				
 				buffer2.ellipse(900/2, 1100/2,
-						abs(sp.x-lsp.x)*2f,abs(sp.x-lsp.x)*2f);
+						abs(sp2.x-lsp.x)*2f,abs(sp2.x-lsp.x)*2f);
 				buffer2.endDraw();
 				Location targetLocation = findCityByName("San Juan");
 				if( targetLocation != null)
 				{
 					distance = (float) lastSelected.getDistanceTo(targetLocation);
 				}
-				cropped = buffer2.get((int)(900/2-(sp.x-200)),(int) (1100/2-(sp.y-50)), 650, 600);
+				cropped = buffer2.get((int)(900/2-(sp2.x-200)),(int) (1100/2-(sp2.y-50)), 650, 600);
 				if( r > 650) // If the radius is bigger than the whole map, then just make it cover all.
 				cropped = buffer2.get((int)0,(int) 0, 650, 600);
 				image(cropped,200,50);
 
 				
 			}
-			image(buffer, x, sp.y+5);
-			image(buffer, 0, 0);
-			
-			
 		}
 		
 		
 		
+	}
+
+
+	public void drawTitle() {
+		PGraphics buffer;
+		ScreenPosition sp = lastSelected.getScreenPosition(map);
+		buffer =createGraphics(300, 20);		
+		
+		buffer.beginDraw();
+		lastSelected.showTitle(buffer, 0, 0);
+		buffer.endDraw();
+		// Adjust where title should go so not off edge.
+		float x = sp.x-lastSelected.titletextwidth/2;
+		if( sp.x + lastSelected.titletextwidth > 850)
+			x = 850 - lastSelected.titletextwidth;
+		else if( x < 200){
+			x = 200;
+		} else {
+			x = sp.x-lastSelected.titletextwidth/2;
+		}
+		image(buffer, x, sp.y+5);
+		image(buffer, 0, 0);
 	}
 	
 	/** Event handler that gets called automatically when the 
@@ -248,23 +252,21 @@ public class EarthquakeCityMap extends PApplet {
 		}
 		if(hitMarker instanceof CityMarker)
 		{
-			List <Marker> m = 
-					((CityMarker) hitMarker).findQuakesInThreatCircle(quakeMarkers);
-			hideMarkers();
-			hitMarker.setHidden(false);
-			if(!m.isEmpty()){
-				for( Marker lm : m){
-					lm.setHidden(false);
-				}
-			}
+			cityClicked(hitMarker);
 		}
 	}
+	/**
+	 * Hide all cities not threatened by this quake.
+	 * @param hitMarker
+	 */
 	public void earthQuakeClicked(Marker hitMarker) {
 		// find and city in threat zone
 		threatDistance = (float) ((EarthquakeMarker) hitMarker).threatCircle();
 		
 		List <Marker> m = ((EarthquakeMarker) hitMarker).findCitysInThreatCircle( cityMarkers);
+		
 		hideMarkers();
+		
 		if(!m.isEmpty()){
 			for( Marker lm : m){
 				lm.setHidden(false);
@@ -273,8 +275,26 @@ public class EarthquakeCityMap extends PApplet {
 		hitMarker.setHidden(false);
 
 	}
-	
-	// loop over and unhide all markers
+	/**
+	 * Hit all quakes that do not threaten this city.
+	 * @param hitMarker
+	 */
+	public void cityClicked(Marker hitMarker) {
+		List <Marker> m = 
+				((CityMarker) hitMarker).findQuakesInThreatCircle(quakeMarkers);
+		
+		hideMarkers();
+		
+		if(!m.isEmpty()){
+			for( Marker lm : m){
+				lm.setHidden(false);
+			}
+		}
+		hitMarker.setHidden(false);
+	}
+/**
+ * loop over all markers and unhide all markers
+ */
 	private void unhideMarkers() {
 		for(Marker marker : quakeMarkers) {
 			marker.setHidden(false);
@@ -284,6 +304,9 @@ public class EarthquakeCityMap extends PApplet {
 			marker.setHidden(false);
 		}
 	}
+/**
+ * Unhide all markers.
+ */
 	public void hideMarkers()
 	{
 		for(Marker marker : quakeMarkers) {
