@@ -67,7 +67,7 @@ public class EarthquakeCityMap extends PApplet {
 	private CommonMarker lastClicked;
 	public float distance;
 	public float threatDistance;
-	List <Marker> markersCircle = null;
+	List <EarthquakeMarker> markersCircle = new ArrayList<EarthquakeMarker>();
 	public void setup() {		
 		// (1) Initializing canvas and map tiles
 		size(900, 700, OPENGL);
@@ -130,12 +130,14 @@ public class EarthquakeCityMap extends PApplet {
 		if (lastSelected != null && !lastSelected.isHidden() ) {
 			drawTitle();			
 			
-			if(lastSelected instanceof EarthquakeMarker) {
-				drawThreatCircle2((EarthquakeMarker) lastSelected);
+			if(lastClicked == null && lastSelected instanceof EarthquakeMarker) {
+				markersCircle = new ArrayList<EarthquakeMarker>();
+				markersCircle.add((EarthquakeMarker) lastSelected);
+				drawThreatCircle(markersCircle);
 			}
 		}
 		if(lastClicked != null && lastClicked instanceof CityMarker) {
-			
+			drawThreatCircle(markersCircle);
 		}
 				
 	}
@@ -144,63 +146,35 @@ public class EarthquakeCityMap extends PApplet {
 	/**
 	 * Draws the threat circle to and off screen buffer and renders it.
 	 */
-	public void drawThreatCircle(EarthquakeMarker marker) {
-		ScreenPosition sp = marker.getScreenPosition(map);
-		PGraphics buffer;
-		PImage cropped;
-		
-		Location l = getLocationByDistance(marker.getLocation(), 
-				(float)  marker.threatCircle());
+	
+	public void drawThreatCircle(List<EarthquakeMarker> marker) {
+		if(marker.isEmpty())
+			return;
+		ScreenPosition sp = marker.get(0).getScreenPosition(map);
+		PGraphics buffer=createGraphics(650, 600);		
+		Location l = getLocationByDistance(marker.get(0).getLocation(), 
+				(float)  marker.get(0).threatCircle());
 		ScreenPosition lsp = map.getScreenPosition(l);
 		float r  = abs(sp.x-lsp.x);
-		threatDistance = (float) ((EarthquakeMarker) marker).threatCircle();
-		distance = (float) marker.getDistanceTo(l);
+		float dx = abs(sp.x-lsp.x)/(float)  marker.get(0).threatCircle();
+		threatDistance = (float)  marker.get(0).threatCircle();
+		distance = (float) marker.get(0).getDistanceTo(l);
 		
-		buffer =createGraphics(900, 1100);
-		renderThreatCircle(buffer, r);
-		
-		cropped = buffer.get((int)(900/2-(sp.x-200)),(int) (1100/2-(sp.y-50)), 650, 600);
-		if( r > 650) // If the radius is bigger than the whole map, then just make it cover all.
-		cropped = buffer.get((int)0,(int) 0, 650, 600);
-		image(cropped,200,50);
-	}
-	public void drawThreatCircle2(EarthquakeMarker marker) {
-		ScreenPosition sp = marker.getScreenPosition(map);
-		PGraphics buffer;
-		
-		
-		Location l = getLocationByDistance(marker.getLocation(), 
-				(float)  marker.threatCircle());
-		ScreenPosition lsp = map.getScreenPosition(l);
-		float r  = abs(sp.x-lsp.x);
-		threatDistance = (float) ((EarthquakeMarker) marker).threatCircle();
-		distance = (float) marker.getDistanceTo(l);
-		
-		buffer =createGraphics(650, 600);
 		buffer.beginDraw();
 		buffer.fill(0,255,0,30);
 		buffer.stroke(255,0,0);
-		//noFill();
-		
-		buffer.ellipse(sp.x-200, sp.y-50,r*2f,r*2f);
+		for(EarthquakeMarker m  : marker) {
+			float d =(float) m.threatCircle();
+			sp = ((EarthquakeMarker) m).getScreenPosition(map);
+			r = d * dx;
+			buffer.ellipse(sp.x-200, sp.y-50,r*2f,r*2f);
+		}
 		buffer.endDraw();
+		
 		image(buffer,200,50);
 	}
 
-	/**
-	 * Draw the threat circle into offscreen buffer.
-	 * @param buffer2
-	 * @param r
-	 */
-	public void renderThreatCircle(PGraphics buffer, float r) {
-		buffer.beginDraw();
-		buffer.fill(0,255,0,30);
-		buffer.stroke(255,0,0);
-		//noFill();
-		
-		buffer.ellipse(900/2, 1100/2,r*2f,r*2f);
-		buffer.endDraw();
-	}
+	
 	/**
 	 * Draws the title of lastSelect to an off screen buffer
 	 * and renders it.

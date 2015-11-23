@@ -90,15 +90,15 @@ public class CityMarker extends CommonMarker {
 	 * @param quakeMarkers
 	 * @return
 	 */
-	public List<Marker> findQuakesInThreatCircle(List<Marker> quakeMarkers)
+	public List<EarthquakeMarker> findQuakesInThreatCircle(List<Marker> quakeMarkers)
 	{
-		List<Marker> quakes = new  ArrayList<>();
+		List<EarthquakeMarker> quakes = new  ArrayList<>();
 		for(Marker m : quakeMarkers)
 		{
 			if(getLocation().getDistance(m.getLocation()) < ((EarthquakeMarker)m).threatCircle())
 			{
 				System.out.println("quake at " + m.getLocation().toString() );
-				quakes.add(m);
+				quakes.add((EarthquakeMarker)m);
 			}
 		}
 		if(quakes.isEmpty())
