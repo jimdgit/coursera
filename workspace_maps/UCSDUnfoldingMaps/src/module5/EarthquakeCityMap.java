@@ -130,7 +130,8 @@ public class EarthquakeCityMap extends PApplet {
 		if (lastSelected != null && !lastSelected.isHidden() ) {
 			drawTitle();			
 			
-			if(lastClicked == null && lastSelected instanceof EarthquakeMarker) {
+			if((lastClicked == null || lastClicked instanceof EarthquakeMarker) 
+					&& lastSelected instanceof EarthquakeMarker) {
 				markersCircle = new ArrayList<EarthquakeMarker>();
 				markersCircle.add((EarthquakeMarker) lastSelected);
 				drawThreatCircle(markersCircle);
