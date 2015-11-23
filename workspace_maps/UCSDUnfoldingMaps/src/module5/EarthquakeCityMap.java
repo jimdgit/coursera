@@ -184,16 +184,14 @@ public class EarthquakeCityMap extends PApplet {
 	public void drawTitle() {
 		PGraphics buffer;
 		ScreenPosition sp = lastSelected.getScreenPosition(map);
-		buffer =createGraphics(600,60);		
+		buffer =createGraphics(650,60);		
 		
 		buffer.beginDraw();
 		lastSelected.showTitle(buffer, 0, 0);
 		buffer.endDraw();
 		// Adjust where title should go so not off edge.
 		float x = sp.x-lastSelected.titletextwidth/2;
-
-//TODO: this code is a little broken.
-		if( sp.x + lastSelected.titletextwidth > 850)
+		if( sp.x + lastSelected.titletextwidth/2 > 850)
 			x = 850 - lastSelected.titletextwidth;
 		else if( x < 200){
 			x = 200;
