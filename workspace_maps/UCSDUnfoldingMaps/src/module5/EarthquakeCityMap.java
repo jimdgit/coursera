@@ -67,6 +67,7 @@ public class EarthquakeCityMap extends PApplet {
 	private CommonMarker lastClicked;
 	public float distance;
 	public float threatDistance;
+	List <Marker> markersCircle = null;
 	public void setup() {		
 		// (1) Initializing canvas and map tiles
 		size(900, 700, OPENGL);
@@ -130,8 +131,11 @@ public class EarthquakeCityMap extends PApplet {
 			drawTitle();			
 			
 			if(lastSelected instanceof EarthquakeMarker) {
-				drawThreatCircle();
+				drawThreatCircle2((EarthquakeMarker) lastSelected);
 			}
+		}
+		if(lastClicked != null && lastClicked instanceof CityMarker) {
+			
 		}
 				
 	}
@@ -140,17 +144,17 @@ public class EarthquakeCityMap extends PApplet {
 	/**
 	 * Draws the threat circle to and off screen buffer and renders it.
 	 */
-	public void drawThreatCircle() {
-		ScreenPosition sp = lastSelected.getScreenPosition(map);
+	public void drawThreatCircle(EarthquakeMarker marker) {
+		ScreenPosition sp = marker.getScreenPosition(map);
 		PGraphics buffer;
 		PImage cropped;
 		
-		Location l = getLocationByDistance(lastSelected.getLocation(), 
-				(float) ((EarthquakeMarker) lastSelected).threatCircle());
+		Location l = getLocationByDistance(marker.getLocation(), 
+				(float)  marker.threatCircle());
 		ScreenPosition lsp = map.getScreenPosition(l);
 		float r  = abs(sp.x-lsp.x);
-		threatDistance = (float) ((EarthquakeMarker) lastSelected).threatCircle();
-		distance = (float) lastSelected.getDistanceTo(l);
+		threatDistance = (float) ((EarthquakeMarker) marker).threatCircle();
+		distance = (float) marker.getDistanceTo(l);
 		
 		buffer =createGraphics(900, 1100);
 		renderThreatCircle(buffer, r);
@@ -160,21 +164,42 @@ public class EarthquakeCityMap extends PApplet {
 		cropped = buffer.get((int)0,(int) 0, 650, 600);
 		image(cropped,200,50);
 	}
-
+	public void drawThreatCircle2(EarthquakeMarker marker) {
+		ScreenPosition sp = marker.getScreenPosition(map);
+		PGraphics buffer;
+		
+		
+		Location l = getLocationByDistance(marker.getLocation(), 
+				(float)  marker.threatCircle());
+		ScreenPosition lsp = map.getScreenPosition(l);
+		float r  = abs(sp.x-lsp.x);
+		threatDistance = (float) ((EarthquakeMarker) marker).threatCircle();
+		distance = (float) marker.getDistanceTo(l);
+		
+		buffer =createGraphics(650, 600);
+		buffer.beginDraw();
+		buffer.fill(0,255,0,30);
+		buffer.stroke(255,0,0);
+		//noFill();
+		
+		buffer.ellipse(sp.x-200, sp.y-50,r*2f,r*2f);
+		buffer.endDraw();
+		image(buffer,200,50);
+	}
 
 	/**
 	 * Draw the threat circle into offscreen buffer.
 	 * @param buffer2
 	 * @param r
 	 */
-	public void renderThreatCircle(PGraphics buffer2, float r) {
-		buffer2.beginDraw();
-		buffer2.fill(0,255,0,25);
-		buffer2.stroke(255,0,0);
+	public void renderThreatCircle(PGraphics buffer, float r) {
+		buffer.beginDraw();
+		buffer.fill(0,255,0,30);
+		buffer.stroke(255,0,0);
 		//noFill();
 		
-		buffer2.ellipse(900/2, 1100/2,r*2f,r*2f);
-		buffer2.endDraw();
+		buffer.ellipse(900/2, 1100/2,r*2f,r*2f);
+		buffer.endDraw();
 	}
 	/**
 	 * Draws the title of lastSelect to an off screen buffer
@@ -184,14 +209,15 @@ public class EarthquakeCityMap extends PApplet {
 	public void drawTitle() {
 		PGraphics buffer;
 		ScreenPosition sp = lastSelected.getScreenPosition(map);
-		buffer =createGraphics(300, 20);		
+		buffer =createGraphics(600,60);		
 		
 		buffer.beginDraw();
 		lastSelected.showTitle(buffer, 0, 0);
 		buffer.endDraw();
 		// Adjust where title should go so not off edge.
 		float x = sp.x-lastSelected.titletextwidth/2;
-		//TODO: this code is a little broken.
+
+//TODO: this code is a little broken.
 		if( sp.x + lastSelected.titletextwidth > 850)
 			x = 850 - lastSelected.titletextwidth;
 		else if( x < 200){
@@ -271,6 +297,7 @@ public class EarthquakeCityMap extends PApplet {
 	 * @param hitMarker
 	 */
 	public void earthQuakeClicked(Marker hitMarker) {
+	
 		// find and city in threat zone
 		threatDistance = (float) ((EarthquakeMarker) hitMarker).threatCircle();
 		
@@ -291,13 +318,13 @@ public class EarthquakeCityMap extends PApplet {
 	 * @param hitMarker
 	 */
 	public void cityClicked(Marker hitMarker) {
-		List <Marker> m = 
+		markersCircle  = 
 				((CityMarker) hitMarker).findQuakesInThreatCircle(quakeMarkers);
 		
 		hideMarkers();
 		
-		if(!m.isEmpty()){
-			for( Marker lm : m){
+		if(!markersCircle.isEmpty()){
+			for( Marker lm : markersCircle){
 				lm.setHidden(false);
 			}
 		}

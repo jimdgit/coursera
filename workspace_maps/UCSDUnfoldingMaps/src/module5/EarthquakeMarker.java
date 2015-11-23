@@ -102,13 +102,18 @@ public abstract class EarthquakeMarker extends CommonMarker
 	public void showTitle(PGraphics pg, float x, float y)
 	{
 		HashMap<String,Object> hmap = getProperties();
-		String info = hmap.get("title").toString() + " " + Double.toString(threatCircle());
+		String.format("%f.2", threatCircle());
+		titletext = hmap.get("title").toString() + " " + String.format("%.2f", threatCircle());
+		titletext = titletext.trim();
+		
 		pg.fill(255, 255, 255);
-		pg.rect(x, y, pg.textWidth(info), 20);
-		pg.fill(0);
-		pg.text(info, x+5, y+15);
-		titletext = info;
-		titletextwidth = pg.textWidth(info);
+		pg.rect(x, y, pg.textWidth(titletext), 20);
+		pg.fill(0,0,0);
+		pg.text(titletext, x+5, y+15);
+		pg.noFill();
+		pg.stroke(0,255,0);
+		//pg.rect(x +1, y+1, x + pg.textWidth(titletext), 19);
+		titletextwidth = pg.textWidth(titletext);
 	}
 
 	
