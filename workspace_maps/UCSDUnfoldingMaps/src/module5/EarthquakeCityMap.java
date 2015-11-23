@@ -153,22 +153,22 @@ public class EarthquakeCityMap extends PApplet {
 			return;
 		ScreenPosition sp = marker.get(0).getScreenPosition(map);
 		PGraphics buffer=createGraphics(650, 600);		
+		// Calculate the location that is X km away, to map km to x,y
 		Location l = getLocationByDistance(marker.get(0).getLocation(), 
 				(float)  marker.get(0).threatCircle());
 		ScreenPosition lsp = map.getScreenPosition(l);
-		float r  = abs(sp.x-lsp.x);
 		float dx = abs(sp.x-lsp.x)/(float)  marker.get(0).threatCircle();
-		threatDistance = (float)  marker.get(0).threatCircle();
-		distance = (float) marker.get(0).getDistanceTo(l);
 		
 		buffer.beginDraw();
 		buffer.fill(0,255,0,30);
 		buffer.stroke(255,0,0);
+		//buffer.line(sp.x-200,sp.y-50,lsp.x-200,lsp.y-50);
 		for(EarthquakeMarker m  : marker) {
 			float d =(float) m.threatCircle();
+			float r = d * dx;
 			sp = ((EarthquakeMarker) m).getScreenPosition(map);
-			r = d * dx;
-			buffer.ellipse(sp.x-200, sp.y-50,r*2f,r*2f);
+			// Width and height are 2x radius.
+			buffer.ellipse(sp.x-200, sp.y-50, r*2f,r*2f);
 		}
 		buffer.endDraw();
 		
@@ -231,7 +231,7 @@ public class EarthquakeCityMap extends PApplet {
 	private void selectMarkerIfHover(List<Marker> markers)
 	{
 		for(Marker m : markers){
-			if( m.isInside(map, mouseX, mouseY) ){
+			if( m.isInside(map, mouseX, mouseY) && !m.isHidden() ){
 				m.setSelected(true);
 				lastSelected =(CommonMarker) m;
 				return;
@@ -486,8 +486,7 @@ public Location findCityByName(String cityName)
 }
 /**
  Convert a distance to longitude, then offset the reference by that.
- This is an attempt to convert distance to pixels.
- @param reference A refernce location to compute from
+ @param reference A reference location to compute from
  @param distance A distance to add to the reference.
 */
 public Location getLocationByDistance(Location reference, float distance)

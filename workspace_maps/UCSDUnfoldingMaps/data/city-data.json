@@ -342,6 +342,23 @@
 		{
 			"type":"Feature",
 			"properties":{
+				"name":"Antofagasta",
+				"population":"0.39",
+				"country":"Chile",
+				"coastal":"true"
+			},
+			"geometry":{
+				"type":"Point",
+				"coordinates":[
+					-70.403815,
+					-23.650999
+				]
+			}
+		},
+		
+		{
+			"type":"Feature",
+			"properties":{
 				"name":"Busan",
 				"population":"3.53",
 				"country":"South Korea",
