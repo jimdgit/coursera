@@ -18,7 +18,7 @@ import processing.core.PGraphics;
  * @author Your name here
  *
  */
-// TODO: Change SimplePointMarker to CommonMarker as the very first thing you do 
+// DONE: Change SimplePointMarker to CommonMarker as the very first thing you do 
 // in module 5 (i.e. CityMarker extends CommonMarker).  It will cause an error.
 // That's what's expected.
 public class CityMarker extends CommonMarker {
@@ -93,16 +93,20 @@ public class CityMarker extends CommonMarker {
 	public List<EarthquakeMarker> findQuakesInThreatCircle(List<Marker> quakeMarkers)
 	{
 		List<EarthquakeMarker> quakes = new  ArrayList<>();
+		System.out.println("=================================");
 		for(Marker m : quakeMarkers)
 		{
+			
 			if(getLocation().getDistance(m.getLocation()) < ((EarthquakeMarker)m).threatCircle())
 			{
-				System.out.println("quake at " + m.getLocation().toString() );
+				System.out.println("quake "+  ((EarthquakeMarker)m).getMagnitude() + " "+ m.getLocation().toString() + " " + ((EarthquakeMarker)m).threatCircle());
 				quakes.add((EarthquakeMarker)m);
 			}
 		}
 		if(quakes.isEmpty())
 			System.out.println("no quakes found");
+		System.out.println("=================================");
+
 		return quakes;
 		
 	}

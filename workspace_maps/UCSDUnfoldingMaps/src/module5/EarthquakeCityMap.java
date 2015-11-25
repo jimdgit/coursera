@@ -246,7 +246,7 @@ public class EarthquakeCityMap extends PApplet {
 	@Override
 	public void mouseClicked()
 	{
-		// TODO: Implement this method
+		// DONE: Implement this method
 		// Hint: You probably want a helper method or two to keep this code
 		// from getting too long/disorganized
 		if( lastClicked != null ) {

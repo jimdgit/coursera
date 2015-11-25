@@ -1,0 +1,11 @@
+The type LandQuakeMarker must implement the inherited abstract method Comparable<EarthquakeMarker>.compareTo(EarthquakeMarker)
+
+- To draw the threat circle, I first had to calculate the delta x per kilometer to determine the radius of the circle. I did this by creating a new location and moving  it by the length of the threat circle in km. This is done by converting km to longitude + distance km / 111.320*cos(latitude) translates the point. I then got the screen position for that point and took the absolute value of the difference of the x components of the two screen positions. This is then multiplied by the threat circle in km to determine the radius of the circle to be drawn.
+- To render the circles, a PGraphics buffer is created that is the exact size of the map. The circles and then rendered into this buffer and then over laid on the map after all the markers have been drawn. Note the fill is set with a transparency  of 30 for the circle so you can see the map behind it. A similar technique was used to render the title text over the markers. The stroke for the circle is set to red, as I found this visually appealing.
+- This method also provide clipping so the circles do not go off the edge of the map.
+- Note that the markers adjust their position so that the title text does not go outside of the map bounds. This was done using the texWIdth method to determine when the text would go off the right or left and how much to adjust the position of the text.
+- The drawn threat circles are a powerful visualization technique that I feel is more informative to the user that simply displaying numbers. I also discovered that quakes can be hidden by other markers, and this technique does a great job of revealing the all quakes that threaten a city. 
+When quake is hovered over the threat circle is drawn on the map.
+When a city is clicked, all the threat circles for the quakes that threaten that city are drawn.
+Also the titles are drawn over the other markers
+https://www.coursera.org/learn/object-oriented-java/peer/XEvqA/programming-assignment-extension-peer-review/review/pV4YnpO8EeWWpRIGHRsuuw

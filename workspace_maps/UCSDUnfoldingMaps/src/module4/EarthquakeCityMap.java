@@ -131,7 +131,7 @@ public class EarthquakeCityMap extends PApplet {
 	}
 	
 	// helper method to draw key in GUI
-	// TODO: Update this method as appropriate
+	// DONE: Update this method as appropriate
 	private void addKey() {	
 		// Remember you can use Processing's graphics methods here
 		fill(255, 250, 240);
@@ -165,7 +165,7 @@ public class EarthquakeCityMap extends PApplet {
 		
 		// IMPLEMENT THIS: loop over all countries to check if location is in any of them
 		
-		// TODO: Implement this method using the helper method isInCountry
+		// DONE: Implement this method using the helper method isInCountry
 		for(Marker country : countryMarkers )
 		{
 			if(isInCountry( earthquake,  country)){
