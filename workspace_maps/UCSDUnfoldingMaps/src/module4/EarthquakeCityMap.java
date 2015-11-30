@@ -14,6 +14,7 @@ import de.fhpotsdam.unfolding.marker.MultiMarker;
 import de.fhpotsdam.unfolding.providers.Google;
 import de.fhpotsdam.unfolding.providers.MBTilesMapProvider;
 import de.fhpotsdam.unfolding.utils.MapUtils;
+import module4.EarthquakeMarker;
 import parsing.ParseFeed;
 import processing.core.PApplet;
 
@@ -111,7 +112,7 @@ public class EarthquakeCityMap extends PApplet {
 	    }
 
 	    // could be used for debugging
-	    printQuakes();
+	   printQuakes();
 	 		
 	    // (3) Add markers to map
 	    //     NOTE: Country markers are not added to the map.  They are used
@@ -130,7 +131,7 @@ public class EarthquakeCityMap extends PApplet {
 	}
 	
 	// helper method to draw key in GUI
-	// TODO: Update this method as appropriate
+	// DONE: Update this method as appropriate
 	private void addKey() {	
 		// Remember you can use Processing's graphics methods here
 		fill(255, 250, 240);
@@ -164,8 +165,14 @@ public class EarthquakeCityMap extends PApplet {
 		
 		// IMPLEMENT THIS: loop over all countries to check if location is in any of them
 		
-		// TODO: Implement this method using the helper method isInCountry
-		
+		// DONE: Implement this method using the helper method isInCountry
+		for(Marker country : countryMarkers )
+		{
+			if(isInCountry( earthquake,  country)){
+				return true;
+			}
+				
+		}
 		// not inside any country
 		return false;
 	}
@@ -178,7 +185,27 @@ public class EarthquakeCityMap extends PApplet {
 	// And LandQuakeMarkers have a "country" property set.
 	private void printQuakes() 
 	{
-		// TODO: Implement this method
+		int totalWaterQuakes = quakeMarkers.size();
+		for(Marker marker : countryMarkers) {
+			String countryName = marker.getProperty("name").toString();
+			int count = countQuakesInCountry(countryName);
+			if (count > 0) {
+				totalWaterQuakes -= count;
+				System.out.println(countryName + ": " + count);
+			}
+		}
+		System.out.println("OCEAN QUAKES: " + totalWaterQuakes);
+	}
+	private int countQuakesInCountry(String country)
+	{
+		int counter = 0;
+		for(Marker qmarker : quakeMarkers) {
+			if(((EarthquakeMarker)qmarker).isOnLand() 
+			 && qmarker.getProperty("country").toString().equals(country)) {
+				++counter;
+			}
+		}
+		return counter;
 	}
 	
 	

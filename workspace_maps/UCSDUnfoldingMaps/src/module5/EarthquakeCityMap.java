@@ -1,6 +1,7 @@
 package module5;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import de.fhpotsdam.unfolding.UnfoldingMap;
@@ -14,8 +15,11 @@ import de.fhpotsdam.unfolding.marker.MultiMarker;
 import de.fhpotsdam.unfolding.providers.Google;
 import de.fhpotsdam.unfolding.providers.MBTilesMapProvider;
 import de.fhpotsdam.unfolding.utils.MapUtils;
+import de.fhpotsdam.unfolding.utils.ScreenPosition;
 import parsing.ParseFeed;
 import processing.core.PApplet;
+import processing.core.PGraphics;
+import processing.core.PImage;
 
 /** EarthquakeCityMap
  * An application with an interactive map displaying earthquake data.
@@ -61,7 +65,9 @@ public class EarthquakeCityMap extends PApplet {
 	// NEW IN MODULE 5
 	private CommonMarker lastSelected;
 	private CommonMarker lastClicked;
-	
+	public float distance;
+	public float threatDistance;
+	List <EarthquakeMarker> markersCircle = new ArrayList<EarthquakeMarker>();
 	public void setup() {		
 		// (1) Initializing canvas and map tiles
 		size(900, 700, OPENGL);
@@ -117,10 +123,83 @@ public class EarthquakeCityMap extends PApplet {
 	
 	
 	public void draw() {
+		
 		background(0);
 		map.draw();
 		addKey();
+		if (lastSelected != null && !lastSelected.isHidden() ) {
+			drawTitle();			
+			
+			if((lastClicked == null || lastClicked instanceof EarthquakeMarker) 
+					&& lastSelected instanceof EarthquakeMarker) {
+				markersCircle = new ArrayList<EarthquakeMarker>();
+				markersCircle.add((EarthquakeMarker) lastSelected);
+				drawThreatCircle(markersCircle);
+			}
+		}
+		if(lastClicked != null && lastClicked instanceof CityMarker) {
+			drawThreatCircle(markersCircle);
+		}
+				
+	}
+
+
+	/**
+	 * Draws the threat circle to and off screen buffer and renders it.
+	 */
+	
+	public void drawThreatCircle(List<EarthquakeMarker> marker) {
+		if(marker.isEmpty())
+			return;
+		ScreenPosition sp = marker.get(0).getScreenPosition(map);
+		PGraphics buffer=createGraphics(650, 600);		
+		// Calculate the location that is X km away, to map km to x,y
+		Location l = getLocationByDistance(marker.get(0).getLocation(), 
+				(float)  marker.get(0).threatCircle());
+		ScreenPosition lsp = map.getScreenPosition(l);
+		float dx = abs(sp.x-lsp.x)/(float)  marker.get(0).threatCircle();
 		
+		buffer.beginDraw();
+		buffer.fill(0,255,0,30);
+		buffer.stroke(255,0,0);
+		//buffer.line(sp.x-200,sp.y-50,lsp.x-200,lsp.y-50);
+		for(EarthquakeMarker m  : marker) {
+			float d =(float) m.threatCircle();
+			float r = d * dx;
+			sp = ((EarthquakeMarker) m).getScreenPosition(map);
+			// Width and height are 2x radius.
+			buffer.ellipse(sp.x-200, sp.y-50, r*2f,r*2f);
+		}
+		buffer.endDraw();
+		
+		image(buffer,200,50);
+	}
+
+	
+	/**
+	 * Draws the title of lastSelect to an off screen buffer
+	 * and renders it.
+	 */
+
+	public void drawTitle() {
+		PGraphics buffer;
+		ScreenPosition sp = lastSelected.getScreenPosition(map);
+		buffer =createGraphics(650,60);		
+		
+		buffer.beginDraw();
+		lastSelected.showTitle(buffer, 0, 0);
+		buffer.endDraw();
+		// Adjust where title should go so not off edge.
+		float x = sp.x-lastSelected.titletextwidth/2;
+		if( sp.x + lastSelected.titletextwidth/2 > 850)
+			x = 850 - lastSelected.titletextwidth;
+		else if( x < 200){
+			x = 200;
+		} else {
+			x = sp.x-lastSelected.titletextwidth/2;
+		}
+		image(buffer, x, sp.y+5);
+		image(buffer, 0, 0);
 	}
 	
 	/** Event handler that gets called automatically when the 
@@ -136,16 +215,27 @@ public class EarthquakeCityMap extends PApplet {
 		
 		}
 		selectMarkerIfHover(quakeMarkers);
-		selectMarkerIfHover(cityMarkers);
+		if(lastSelected == null)
+		 selectMarkerIfHover(cityMarkers);
 	}
 	
-	// If there is a marker under the cursor, and lastSelected is null 
-	// set the lastSelected to be the first marker found under the cursor
-	// Make sure you do not select two markers.
-	// 
+	/**
+	 * If there is a marker under the cursor, and lastSelected is null 
+	 * set the lastSelected to be the first marker found under the cursor
+	 * Make sure you do not select two markers.
+	 * 
+	 * @param markers list
+	 */
 	private void selectMarkerIfHover(List<Marker> markers)
 	{
-		// TODO: Implement this method
+		for(Marker m : markers){
+			if( m.isInside(map, mouseX, mouseY) && !m.isHidden() ){
+				m.setSelected(true);
+				lastSelected =(CommonMarker) m;
+				return;
+			}      		
+		}
+			
 	}
 	
 	/** The event handler for mouse clicks
@@ -156,13 +246,66 @@ public class EarthquakeCityMap extends PApplet {
 	@Override
 	public void mouseClicked()
 	{
-		// TODO: Implement this method
+		// DONE: Implement this method
 		// Hint: You probably want a helper method or two to keep this code
 		// from getting too long/disorganized
+		if( lastClicked != null ) {
+			unhideMarkers();
+			lastClicked = null;
+		}
+		Marker hitMarker = map.getFirstHitMarker(mouseX, mouseY);
+		if(hitMarker != null)
+			lastClicked = (CommonMarker) hitMarker;
+		if(hitMarker instanceof EarthquakeMarker)
+		{
+			earthQuakeClicked( hitMarker) ;
+		}
+		if(hitMarker instanceof CityMarker)
+		{
+			cityClicked(hitMarker);
+		}
 	}
+	/**
+	 * Hide all cities not threatened by this quake.
+	 * @param hitMarker
+	 */
+	public void earthQuakeClicked(Marker hitMarker) {
 	
-	
-	// loop over and unhide all markers
+		// find and city in threat zone
+		threatDistance = (float) ((EarthquakeMarker) hitMarker).threatCircle();
+		
+		List <Marker> m = ((EarthquakeMarker) hitMarker).findCitysInThreatCircle( cityMarkers);
+		
+		hideMarkers();
+		
+		if(!m.isEmpty()){
+			for( Marker lm : m){
+				lm.setHidden(false);
+			}
+		}
+		hitMarker.setHidden(false);
+
+	}
+	/**
+	 * Hit all quakes that do not threaten this city.
+	 * @param hitMarker
+	 */
+	public void cityClicked(Marker hitMarker) {
+		markersCircle  = 
+				((CityMarker) hitMarker).findQuakesInThreatCircle(quakeMarkers);
+		
+		hideMarkers();
+		
+		if(!markersCircle.isEmpty()){
+			for( Marker lm : markersCircle){
+				lm.setHidden(false);
+			}
+		}
+		hitMarker.setHidden(false);
+	}
+/**
+ * loop over all markers and unhide all markers
+ */
 	private void unhideMarkers() {
 		for(Marker marker : quakeMarkers) {
 			marker.setHidden(false);
@@ -172,7 +315,20 @@ public class EarthquakeCityMap extends PApplet {
 			marker.setHidden(false);
 		}
 	}
+/**
+ * Unhide all markers.
+ */
+	public void hideMarkers()
+	{
+		for(Marker marker : quakeMarkers) {
+			marker.setHidden(true);
+		}
+		for(Marker marker : cityMarkers) {
+			marker.setHidden(true);
+		}
+
 	
+	}
 	// helper method to draw key in GUI
 	private void addKey() {	
 		// Remember you can use Processing's graphics methods here
@@ -315,4 +471,35 @@ public class EarthquakeCityMap extends PApplet {
 		return false;
 	}
 
+public Location findCityByName(String cityName)
+{
+	for(Marker m : cityMarkers){
+		HashMap<String,Object> hmap = m.getProperties();
+		if( hmap.get("name").toString().equals(cityName)) {
+			return m.getLocation();
+		}
+		
+	}
+	return null;
 }
+/**
+ Convert a distance to longitude, then offset the reference by that.
+ @param reference A reference location to compute from
+ @param distance A distance to add to the reference.
+*/
+public Location getLocationByDistance(Location reference, float distance)
+{
+	Location l = new Location(reference);
+	double radians = Math.toRadians(reference.getLat());
+	double thecos = Math.cos(radians);
+	//111.320*cos(latitude) km
+	l.setLon((float) (l.getLon() + (double) distance/(111.320*thecos)) );
+	return l;
+}
+
+
+}
+
+
+
+

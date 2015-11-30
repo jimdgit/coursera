@@ -8,8 +8,23 @@ package demos;
  */
 public class Student extends Person
 {
-	public Student(String name)  {
+	private String studentID;
+
+	public Student(String name, String sID)  {
 		super(name);
+		 setStudentID(sID);
+	}
+    public String toString()
+    {
+		return studentID + "ID:" + super.getName();
+    	
+    }
+	public String getStudentID() {
+		return studentID;
+	}
+
+	public void setStudentID(String studentID) {
+		this.studentID = studentID;
 	}
 
 	public boolean isAsleep( int hr ) // override 
@@ -20,7 +35,7 @@ public class Student extends Person
 	public static void main(String[] args)
 	{
 		Person p;
-		p = new Student("Sally");
+		p = new Student("Sally", "ABCDEF");
 		p.status(1);
 	}
 }

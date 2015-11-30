@@ -1,8 +1,13 @@
 package module5;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import de.fhpotsdam.unfolding.data.Feature;
 import de.fhpotsdam.unfolding.data.PointFeature;
 import de.fhpotsdam.unfolding.geo.Location;
+import de.fhpotsdam.unfolding.marker.Marker;
 import de.fhpotsdam.unfolding.marker.SimplePointMarker;
 import processing.core.PConstants;
 import processing.core.PGraphics;
@@ -13,10 +18,10 @@ import processing.core.PGraphics;
  * @author Your name here
  *
  */
-// TODO: Change SimplePointMarker to CommonMarker as the very first thing you do 
+// DONE: Change SimplePointMarker to CommonMarker as the very first thing you do 
 // in module 5 (i.e. CityMarker extends CommonMarker).  It will cause an error.
 // That's what's expected.
-public class CityMarker extends SimplePointMarker {
+public class CityMarker extends CommonMarker {
 	
 	public static int TRI_SIZE = 5;  // The size of the triangle marker
 	
@@ -29,13 +34,18 @@ public class CityMarker extends SimplePointMarker {
 		super(((PointFeature)city).getLocation(), city.getProperties());
 		// Cities have properties: "name" (city name), "country" (country name)
 		// and "population" (population, in millions)
+	
+		
 	}
 
 	
 	/**
 	 * Implementation of method to draw marker on the map.
 	 */
+	// Need to get rid of this one or it will be called instead of common marker draw.
+	/*
 	public void draw(PGraphics pg, float x, float y) {
+		super.draw(pg,x,y);
 		// Save previous drawing style
 		pg.pushStyle();
 		
@@ -46,15 +56,60 @@ public class CityMarker extends SimplePointMarker {
 		// Restore previous drawing style
 		pg.popStyle();
 	}
+	*/
+	public  void drawMarker(PGraphics pg, float x, float y)
+	{
+	
+		pg.pushStyle();
+		
+		// IMPLEMENT: drawing triangle for each city
+		pg.fill(0, 255, 0);
+		pg.triangle(x, y-TRI_SIZE, x-TRI_SIZE, y+TRI_SIZE, x+TRI_SIZE, y+TRI_SIZE);
+		
+		// Restore previous drawing style
+		pg.popStyle();
+	}
 	
 	/** Show the title of the city if this marker is selected */
 	public void showTitle(PGraphics pg, float x, float y)
 	{
 		
-		// TODO: Implement this method
+		HashMap<String,Object> hmap = getProperties();
+		String info = hmap.get("name").toString() + ", " + hmap.get("country").toString()
+		         + " "+ hmap.get("population").toString() + "M";
+		
+		pg.fill(255, 255, 255);
+		pg.rect(x, y, pg.textWidth(info) , 20);
+		pg.fill(0);
+		pg.text(info, x+5, y+15);
+		titletext = info;
+		titletextwidth = pg.textWidth(info);
 	}
-	
-	
+	/**
+	 * Find all quakes in which this city is in their threat circle.
+	 * @param quakeMarkers
+	 * @return
+	 */
+	public List<EarthquakeMarker> findQuakesInThreatCircle(List<Marker> quakeMarkers)
+	{
+		List<EarthquakeMarker> quakes = new  ArrayList<>();
+		System.out.println("=================================");
+		for(Marker m : quakeMarkers)
+		{
+			
+			if(getLocation().getDistance(m.getLocation()) < ((EarthquakeMarker)m).threatCircle())
+			{
+				System.out.println("quake "+  ((EarthquakeMarker)m).getMagnitude() + " "+ m.getLocation().toString() + " " + ((EarthquakeMarker)m).threatCircle());
+				quakes.add((EarthquakeMarker)m);
+			}
+		}
+		if(quakes.isEmpty())
+			System.out.println("no quakes found");
+		System.out.println("=================================");
+
+		return quakes;
+		
+	}
 	
 	/* Local getters for some city properties.  
 	 */

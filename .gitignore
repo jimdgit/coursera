@@ -10,7 +10,7 @@ tmp/
 local.properties
 .settings/
 .loadpath
-
+.recommenders
 
 
 # External tool builders
@@ -36,3 +36,5 @@ local.properties
 
 # STS (Spring Tool Suite)
 .springBeans
+/workspace_maps/.recommenders
+/workspace_maps/.recommenders
