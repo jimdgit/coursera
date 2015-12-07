@@ -33,7 +33,10 @@ public class DocumentBenchmarking {
 		// THe number of characters to start with. 
 		// You can play around with this.
 		int start = 50000;
-		
+		String text = "Practice, practice, practice!";
+		int n = text.indexOf("prac");
+		String text2 = "Hurray!!#! It's Friday! finally...";
+		String[] words = text2.split("!+");
 		// TODO: Fill in the rest of this method so that it runs two loops
 		// and prints out timing results as described in the assignment 
 		// instructions.
