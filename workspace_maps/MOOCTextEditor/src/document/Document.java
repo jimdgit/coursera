@@ -112,12 +112,18 @@ public abstract class Document {
 	{
 		return this.text;
 	}
-	
+	 public static final double K1 = 206.835;
+	 
+	 public static final double K2 = 1.015;
+	 
+	 public static final double K3 = 84.6;
 	/** return the Flesch readability score of this document */
 	public double getFleschScore()
 	{
 	    // TODO: Implement this method
-	    return 0.0;
+		return K1 - K2  * (double)getNumWords()/(double)getNumSentences() - K3 * (double)getNumSyllables()/(double)getNumWords();
+		//return  206.835 - 1.015 * getNumWords()/getNumSentences() - 84.6 * getNumSyllables()/getNumWords();
+	    
 	}
 	
 	

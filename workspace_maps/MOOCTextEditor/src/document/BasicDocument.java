@@ -37,7 +37,7 @@ public class BasicDocument extends Document
 		//TODO: Implement this method.  See the Module 1 support videos 
 	    // if you need help.
 		List<String> sl;
-		sl =getTokens("[a-zA-Z]+");
+		sl = getTokens("[a-zA-Z]+");
         return sl.size();
 	}
 	
@@ -74,7 +74,7 @@ public class BasicDocument extends Document
         // if you need help.
 		List<String> sl;
 		int sys = 0;
-		sl =getTokens("[a-zA-Z]+"); // get all the words.
+		sl = getTokens("[a-zA-Z]+"); // get all the words.
 		for(String s : sl)
 		{
 			sys += countSyllables(s);
@@ -87,27 +87,28 @@ public class BasicDocument extends Document
 
 	ArrayList<String> tokens = new ArrayList<String>();
 	
-	// Break the word into not vowels and  vowels and not vowels
+	// Break the word into 'not vowels' and  'vowels' and 'not vowels'
 	Pattern p = Pattern.compile("[^aeiouy]*[aeiouy]+[^aeiouy]*");
 	word = word.toLowerCase();
 	Matcher m = p.matcher(word);
-	if( debug )	
-	System.out.print("["  +word + "]  : ");
-
+	
 	while (m.find()) {
 	    tokens.add(m.group());
 	}
-	if( debug )
-	for( String s : tokens){
-		System.out.print(s + " ");
-	}
+	
+	if( debug )	{
+		System.out.print("["  +word + "]  : ");
 
+		for( String s : tokens){
+			System.out.print(s + " ");
+		}
+	}
 	if(tokens.size() > 1 && tokens.lastIndexOf("e") ==  ( tokens.size() - 1 )  )
 	{
 		tokens.remove(0);
 	}
 	if( debug )
-	System.out.println(" " + tokens.size());
+		System.out.println(" " + tokens.size());
 	return tokens.size(); 
 
 	}
@@ -116,11 +117,7 @@ public class BasicDocument extends Document
 	 * You are encouraged to add your own tests.  */
 	public static void main(String[] args)
 	{
-		BasicDocument bd = new BasicDocument("This is a test.  How many???  "
-		        + "Senteeeeeeeeeences are here... there should be 5!  Right?");
-		System.out.println(" Words: " + bd.getNumWords());
-		System.out.println(" Sentences: " + bd.getNumSentences());
-		System.out.println(" Syllables: " + bd.getNumSyllables());
+	
 		testCase(new BasicDocument("This is a test.  How many???  "
 		        + "Senteeeeeeeeeences are here... there should be 5!  Right?"),
 				16, 13, 5);
