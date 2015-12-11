@@ -1,6 +1,11 @@
 package document;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+//import org.hamcrest.Matcher;
 
 /** 
  * A naive implementation of the Document abstract class. 
@@ -8,6 +13,7 @@ import java.util.List;
  */
 public class BasicDocument extends Document 
 {
+	final static boolean debug = false;
 	/** Create a new BasicDocument object
 	 * 
 	 * @param text The full text of the Document.
@@ -30,7 +36,9 @@ public class BasicDocument extends Document
 	{
 		//TODO: Implement this method.  See the Module 1 support videos 
 	    // if you need help.
-	    return 0;
+		List<String> sl;
+		sl =getTokens("[a-zA-Z]+");
+        return sl.size();
 	}
 	
 	/**
@@ -44,9 +52,11 @@ public class BasicDocument extends Document
 	@Override
 	public int getNumSentences()
 	{
+		List<String> sl;
+		sl = getTokens("[^!.?]+");
 	    //TODO: Implement this method.  See the Module 1 support videos 
         // if you need help.
-        return 0;
+        return sl.size();
 	}
 	
 	/**
@@ -62,14 +72,55 @@ public class BasicDocument extends Document
 	{
 	    //TODO: Implement this method.  See the Module 1 support videos 
         // if you need help.
-        return 0;
+		List<String> sl;
+		int sys = 0;
+		sl =getTokens("[a-zA-Z]+"); // get all the words.
+		for(String s : sl)
+		{
+			sys += countSyllables(s);
+		}
+        return sys;
+        
 	}
+	public int countSyllables(String word)
+	{
+
+	ArrayList<String> tokens = new ArrayList<String>();
 	
+	// Break the word into not vowels and  vowels and not vowels
+	Pattern p = Pattern.compile("[^aeiouy]*[aeiouy]+[^aeiouy]*");
+	word = word.toLowerCase();
+	Matcher m = p.matcher(word);
+	if( debug )	
+	System.out.print("["  +word + "]  : ");
+
+	while (m.find()) {
+	    tokens.add(m.group());
+	}
+	if( debug )
+	for( String s : tokens){
+		System.out.print(s + " ");
+	}
+
+	if(tokens.size() > 1 && tokens.lastIndexOf("e") ==  ( tokens.size() - 1 )  )
+	{
+		tokens.remove(0);
+	}
+	if( debug )
+	System.out.println(" " + tokens.size());
+	return tokens.size(); 
+
+	}
 	
 	/* The main method for testing this class. 
 	 * You are encouraged to add your own tests.  */
 	public static void main(String[] args)
 	{
+		BasicDocument bd = new BasicDocument("This is a test.  How many???  "
+		        + "Senteeeeeeeeeences are here... there should be 5!  Right?");
+		System.out.println(" Words: " + bd.getNumWords());
+		System.out.println(" Sentences: " + bd.getNumSentences());
+		System.out.println(" Syllables: " + bd.getNumSyllables());
 		testCase(new BasicDocument("This is a test.  How many???  "
 		        + "Senteeeeeeeeeences are here... there should be 5!  Right?"),
 				16, 13, 5);

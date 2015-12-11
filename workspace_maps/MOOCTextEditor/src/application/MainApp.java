@@ -28,14 +28,14 @@ public class MainApp extends Application {
 	private BorderPane rootLayout;
 	
 	
-	// called at start of application
+	// called at start of application 
 	@Override
 	public void start(Stage primaryStage) {
 		
 		this.primaryStage = primaryStage;
 		
 		this.primaryStage.setTitle("TextProApp");
-		
+		 
 		try {
 			// Load root layout from fxml
 			FXMLLoader loader = new FXMLLoader(MainApp.class.getResource("view/RootLayout.fxml"));

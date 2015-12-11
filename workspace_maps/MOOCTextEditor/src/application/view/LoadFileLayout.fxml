@@ -5,10 +5,10 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" prefHeight="200.0" prefWidth="300.0"  minHeight ="35.0" spacing="25.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="application.LoadFileDialogController">
+<VBox alignment="CENTER" minHeight="35.0" prefHeight="200.0" prefWidth="300.0" spacing="25.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LoadFileDialogController">
   <!-- TODO Add Nodes -->
   <children>
-    <Label text="Choose text file..." />
+    <Label text="Choose text file...!!" />
     <HBox alignment="CENTER" spacing="10.0">
       <children>
         <TextField fx:id="pathField" prefHeight="30.0" prefWidth="162.0" />
